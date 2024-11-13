@@ -1,25 +1,36 @@
+import "./App.css";
+import DashboardPage from "./Pages/DashBoardPage";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import FacilityPage from "./Pages/FacilityPage";
+import CoursePage from "./Pages/CoursePage";
 
-
-import './App.css'
-import DashboardPage from './Pages/DashBoardPage';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import FacilityPage from './Pages/FacilityPage';
-import CoursePage from './Pages/CoursePage';
-
+const router = createBrowserRouter([
+  {
+    path: "/",
+    // element:<MainLayout />, 메인 레이아웃 들어가야함
+    // errorElement: <ErrorPage />, 에러 페이지 들어가야함
+    children: [
+      {
+        index: true,
+        element: <DashboardPage />,
+      },
+      {
+        path: "dashboard",
+        element: <DashboardPage />,
+      },
+      {
+        path: "course",
+        element: <CoursePage />,
+      },
+      {
+        path: "facility",
+        element: <FacilityPage />,
+      },
+    ],
+  },
+]);
 function App() {
-  return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<DashboardPage />} />
-          <Route path="/dashboard" element={<DashboardPage />} />
-          <Route path="/course" element={<CoursePage />} />
-          <Route path="/facility" element={<FacilityPage />} />
-        </Routes>
-      </Router>
-      {/* <ClippedDrawer /> */}
-    </>
-  )
+  return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
