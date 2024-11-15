@@ -1,23 +1,18 @@
-
 import Box from "@mui/material/Box";
 import ClippedDrawer from "../Components/ClipDrawer/ClipDrawer";
 import Toolbar from "@mui/material/Toolbar";
-import { ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 
-interface MainLayoutProps {
-    children: ReactNode;
-}
-
-const MainLayout = ({ children }: MainLayoutProps) => {
-    return (
-        <Box sx={{ display: "flex" }}>
-            <ClippedDrawer />
-            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                <Toolbar />
-                {children}
-            </Box>
-        </Box>
-    );
+const MainLayout = () => {
+  return (
+    <Box sx={{ display: "flex" }}>
+      <ClippedDrawer />
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+        <Toolbar />
+        <Outlet />
+      </Box>
+    </Box>
+  );
 };
 
 export default MainLayout;

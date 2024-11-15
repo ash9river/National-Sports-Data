@@ -3,11 +3,12 @@ import DashboardPage from "./Pages/DashBoardPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import FacilityPage from "./Pages/FacilityPage";
 import CoursePage from "./Pages/CoursePage";
+import MainLayout from "./Layouts/MainLayout";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    // element:<MainLayout />, 메인 레이아웃 들어가야함
+    element: <MainLayout />,
     // errorElement: <ErrorPage />, 에러 페이지 들어가야함
     children: [
       {

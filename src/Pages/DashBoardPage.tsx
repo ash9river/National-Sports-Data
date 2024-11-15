@@ -1,12 +1,7 @@
 import Box from "@mui/material/Box";
-import MainLayout from "../Layouts/MainLayout";
 
 const DashboardPage = () => {
-    return (
-        <MainLayout>
-            <Box>대시 보드</Box>
-        </MainLayout>
-    );
+  return <Box>대시 보드</Box>;
 };
 
 export default DashboardPage;
