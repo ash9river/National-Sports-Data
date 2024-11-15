@@ -1,13 +1,13 @@
-import "./App.css";
-import DashboardPage from "./Pages/DashBoardPage";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import FacilityPage from "./Pages/FacilityPage";
-import CoursePage from "./Pages/CoursePage";
-import MainLayout from "./Layouts/MainLayout";
+import './App.css';
+import DashboardPage from './Pages/DashBoardPage';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import FacilityPage from './Pages/FacilityPage';
+import CoursePage from './Pages/CoursePage';
+import MainLayout from './Layouts/MainLayout';
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <MainLayout />,
     // errorElement: <ErrorPage />, 에러 페이지 들어가야함
     children: [
@@ -16,15 +16,15 @@ const router = createBrowserRouter([
         element: <DashboardPage />,
       },
       {
-        path: "dashboard",
+        path: 'dashboard',
         element: <DashboardPage />,
       },
       {
-        path: "course",
+        path: 'course',
         element: <CoursePage />,
       },
       {
-        path: "facility",
+        path: 'facility',
         element: <FacilityPage />,
       },
     ],

@@ -1,7 +1,7 @@
-import { useFetchCourses } from "../Hooks/useFetchCourses";
-import { useCourseStore } from "../Contexts/useCourseStore";
-import { useRef, useCallback } from "react";
-import { Box, CircularProgress, Divider } from "@mui/material";
+import { useFetchCourses } from '../Hooks/useFetchCourses';
+import { useCourseStore } from '../Contexts/useCourseStore';
+import { useRef, useCallback } from 'react';
+import { Box, CircularProgress, Divider } from '@mui/material';
 
 const CoursePage = () => {
   const { fetchNextPage, isFetchingNextPage, hasNextPage, error, isLoading } =
@@ -21,7 +21,7 @@ const CoursePage = () => {
       });
       if (node) observerRef.current.observe(node);
     },
-    [isFetchingNextPage, fetchNextPage, hasNextPage]
+    [isFetchingNextPage, fetchNextPage, hasNextPage],
   );
 
   if (error) return <div>강좌 정보가 없습니다</div>;
