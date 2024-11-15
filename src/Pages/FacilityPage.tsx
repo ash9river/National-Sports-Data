@@ -1,12 +1,15 @@
-import Box from "@mui/material/Box";
 import MainLayout from "../Layouts/MainLayout";
+import MapContainer from "../Components/KakaoMap/MapContainer";
+import { Box } from "@mui/material";
 
 const FacilityPage = () => {
-    return (
-        <MainLayout>
-            <Box>시설 찾기</Box>
-        </MainLayout>
-    );
+  return (
+    <MainLayout>
+      <Box>
+        <MapContainer />
+      </Box>
+    </MainLayout>
+  );
 };
 
 export default FacilityPage;
