@@ -1,11 +1,11 @@
-import { useFetchCourses } from '../Hooks/useFetchCourses';
+import { useCourseQuery } from '../Hooks/useCourseQuery';
 import { useCourseStore } from '../Contexts/useCourseStore';
 import { useRef, useCallback } from 'react';
 import { Box, CircularProgress, Divider } from '@mui/material';
 
 const CoursePage = () => {
   const { fetchNextPage, isFetchingNextPage, hasNextPage, error, isLoading } =
-    useFetchCourses();
+    useCourseQuery();
   const courses = useCourseStore((state) => state.courses);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -45,19 +45,19 @@ const CoursePage = () => {
           const isLastItem = index === courses.length - 1;
           const courseContent = (
             <Box>
-              <strong>{course.course_nm}</strong>
+              <strong>{course.course_name}</strong>
               <br />
-              강사명: {course.lectr_nm}
+              요일: {course.weekday}
               <br />
-              시간: {course.start_tm} - {course.equip_tm}
+              시간: {course.start_time} - {course.end_time}
               <br />
-              내용: {course.course_seta_desc_cn}
+              {/* 내용: {course.course_seta_desc_cn} */}
             </Box>
           );
 
           return (
             <div
-              key={course.course_no}
+              key={course.course_id}
               ref={isLastItem ? lastCourseRef : undefined} // 마지막 항목만 lastCourseRef
             >
               {courseContent}
