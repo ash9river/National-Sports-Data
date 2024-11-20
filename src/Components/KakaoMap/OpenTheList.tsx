@@ -1,6 +1,5 @@
 import { ArrowRight } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import { useState } from 'react';
 import useSideBarIsOpenStore from '../../Contexts/useSideBarIsOpenStore';
 
 function OpenTheList() {
