@@ -1,17 +1,17 @@
-import { useMap } from "react-kakao-maps-sdk";
-import useGeolocation from "../../Hooks/useGeolocation";
-import { CSSProperties } from "react";
+import { useMap } from 'react-kakao-maps-sdk';
+import useGeolocation from '../../Hooks/useGeolocation';
+import { CSSProperties } from 'react';
 
 const PanToCurrentPositionContainerStyle: CSSProperties = {
   zIndex: 1,
-  position: "absolute",
-  bottom: "14rem",
-  right: "3px",
-  width: "32px",
-  height: "32px",
-  backgroundColor: "#ffffff",
-  border: "none",
-  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+  position: 'absolute',
+  bottom: '14rem',
+  right: '3px',
+  width: '32px',
+  height: '32px',
+  backgroundColor: '#ffffff',
+  border: 'none',
+  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
 };
 
 function PanToCurrentPosition() {
@@ -21,7 +21,7 @@ function PanToCurrentPosition() {
     if (!position) return;
     const myCenter = new kakao.maps.LatLng(
       position?.latitude,
-      position?.longitude
+      position?.longitude,
     );
     map.panTo(myCenter);
   }
@@ -34,8 +34,8 @@ function PanToCurrentPosition() {
     >
       <svg
         style={{
-          width: "10px",
-          height: "10px",
+          width: '10px',
+          height: '10px',
         }}
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 512 512"

@@ -1,16 +1,18 @@
-
+// 강좌 정보 구조
 export interface Course {
-    item_nm: string;                // 종목명
-    start_tm: string;               // 시작 시각
-    row_num: number;                // 순번
-    lectr_nm: string;               // 강사명
-    item_cd: string;                // 종목 코드
-    facil_sn: string;               // 시설 일련번호
-    equip_tm: string;               // 종료 시각
-    lectr_weekday_val: string;      // 강좌 요일 값 (월화수목금토일 순서로 표현된 값)
-    course_seta_desc_cn: string;    // 강좌 상세 설명 내용
-    course_no: string;              // 강좌 번호
-    settl_amt: string;              // 결제 금액
-    course_nm: string;              // 강좌명
-    brno: string;                   // 사업자 등록번호
+  course_id: number; // 강좌 ID
+  course_name: string; // 강좌 이름
+  start_time: string; // 시작 시간 (예: "10:00")
+  end_time: string; // 종료 시간 (예: "12:00")
+  weekday: string; // 강좌 진행 요일 (이진 문자열, 예: "1010100")
+  is_disabled_only: 'Y' | 'N'; // 장애인 전용 여부
+}
+
+// 강좌 목록 데이터 구조
+export interface CourseListData {
+  total_count: number; // 총 강좌 수
+  page: number; // 현재 페이지 번호
+  size: number; // 페이지당 강좌 수
+  total_pages: number; // 총 페이지 수
+  courses: Course[]; // 강좌 목록
 }

@@ -1,12 +1,12 @@
-import { AxiosRequestConfig, isAxiosError } from "axios";
-import { apiRequester, setRequestDefaultHeader } from "./apiRequestor";
+import { AxiosRequestConfig, isAxiosError } from 'axios';
+import { apiRequester, setRequestDefaultHeader } from './apiRequestor';
 
 const bracket = {};
 
 export const getData = async <T>(
   url: string,
   signal?: AbortSignal,
-  config?: AxiosRequestConfig
+  config?: AxiosRequestConfig,
 ): Promise<T> => {
   try {
     const modifiedConfig = setRequestDefaultHeader(config || bracket, signal);
