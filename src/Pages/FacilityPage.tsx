@@ -1,5 +1,5 @@
 import MapContainer from '../Components/KakaoMap/MapContainer';
-import SideBar from '../Components/KakaoMap/Sidebar';
+import SideBar from '../Components/KakaoMap/SideBar';
 
 const FacilityPage = () => {
   return (
