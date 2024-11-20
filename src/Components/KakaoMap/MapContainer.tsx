@@ -1,7 +1,7 @@
-import { Map, ZoomControl } from "react-kakao-maps-sdk";
-import useKakaoLoader from "../../Hooks/useKakaoLoader";
-import { useEffect, useState } from "react";
-import useGeolocation from "../../Hooks/useGeolocation";
+import { Map, ZoomControl } from 'react-kakao-maps-sdk';
+import useKakaoLoader from '../../Hooks/useKakaoLoader';
+import { useEffect, useState } from 'react';
+import useGeolocation from '../../Hooks/useGeolocation';
 
 function MapContainer() {
   useKakaoLoader();
@@ -14,7 +14,7 @@ function MapContainer() {
     if (!position) return;
     const newCenter = new kakao.maps.LatLng(
       position?.latitude,
-      position?.longitude
+      position?.longitude,
     );
     console.log(newCenter);
 
@@ -31,8 +31,8 @@ function MapContainer() {
       }}
       style={{
         // 지도의 크기
-        width: "100%",
-        height: "500px",
+        width: '100%',
+        height: 'calc(100vh - 60px)',
       }}
       level={6} // 지도의 확대 레벨
       onCreate={setMap}

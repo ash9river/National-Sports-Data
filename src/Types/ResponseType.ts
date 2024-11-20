@@ -1,20 +1,10 @@
-export interface ResponseHeader {
-    resultCode: string; // 결과 코드
-    resultMsg: string;  // 결과 메시지
-}
-
-export interface ResponseBody<T> {
-    pageNo: number;           // 페이지 번호
-    totalCount: number;       // 전체 결과 수
-    items: {
-        item: T[];            // 결과 아이템
-    };
-    numOfRows: number;        // 페이지당 결과 수
-}
-
+// 공통 API 응답 구조
 export interface ApiResponse<T> {
-    response: {
-        header: ResponseHeader; // 헤더 정보
-        body: ResponseBody<T>;  // 본문 내용 (제네릭 타입 포함)
-    };
+  status: number; // HTTP 상태 코드
+  message?: string; // 성공 메시지 (예: "요청 성공")
+  data?: T; // 성공 시 반환되는 데이터
+  error?: string; // 오류 메시지 (예: "조건에 맞는 데이터가 없습니다")
 }
+
+// 오류 응답 구조
+export type ErrorResponse = ApiResponse<null>;
