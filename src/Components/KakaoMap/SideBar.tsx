@@ -13,7 +13,7 @@ function SideBar() {
         top: '64px',
         zIndex: '999',
         p: '0',
-        left: isOpen ? '240px' : '-240px',
+        left: isOpen ? '240px' : '-150px',
         transition: 'all 0.3s ease-in',
       }}
     >

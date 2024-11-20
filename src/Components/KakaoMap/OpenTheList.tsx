@@ -17,15 +17,19 @@ function OpenTheList() {
         p: '0',
         position: 'absolute',
         top: '50%',
+        left: isOpen ? '630px' : '240px',
         zIndex: '99',
+        width: '23px',
+        height: '46px',
         bgcolor: 'white',
-        borderRadius: '0',
+        border: '1px solid #e3e3e3',
+        borderLeft: '0px',
+        borderRadius: '0px 9px 9px 0px',
         '&:hover': {
           bgcolor: 'white',
         },
         transform: 'translateY(-50%)',
         transition: 'all 0.3s ease-in',
-        left: isOpen ? '630px' : '240px',
       }}
       onClick={handleClick}
     >
