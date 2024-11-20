@@ -1,7 +1,9 @@
-import { Map, ZoomControl } from "react-kakao-maps-sdk";
-import useKakaoLoader from "../../Hooks/useKakaoLoader";
-import { useEffect, useState } from "react";
-import useGeolocation from "../../Hooks/useGeolocation";
+import { Map, ZoomControl } from 'react-kakao-maps-sdk';
+import useKakaoLoader from '../../Hooks/useKakaoLoader';
+import { useEffect, useState } from 'react';
+import useGeolocation from '../../Hooks/useGeolocation';
+import PanToCurrentPosition from './PanToCurrentPosition';
+import OpenTheList from './OpenTheList';
 
 function MapContainer() {
   useKakaoLoader();
@@ -14,7 +16,7 @@ function MapContainer() {
     if (!position) return;
     const newCenter = new kakao.maps.LatLng(
       position?.latitude,
-      position?.longitude
+      position?.longitude,
     );
     console.log(newCenter);
 
@@ -31,8 +33,8 @@ function MapContainer() {
       }}
       style={{
         // 지도의 크기
-        width: "100%",
-        height: "500px",
+        width: '100%',
+        height: 'calc(100vh - 65px)',
       }}
       level={6} // 지도의 확대 레벨
       onCreate={setMap}
@@ -51,6 +53,8 @@ function MapContainer() {
           title={position.title} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
         />
       )) */}
+      <OpenTheList />
+      <PanToCurrentPosition />
       <ZoomControl position="BOTTOMRIGHT" />
     </Map>
   );

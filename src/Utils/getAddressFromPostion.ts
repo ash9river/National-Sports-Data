@@ -6,7 +6,7 @@ function getAddressFromPosition(lat: number, lng: number) {
       address: kakao.maps.services.Address;
       road_address: kakao.maps.services.RoadAaddress | null;
     }>,
-    status: kakao.maps.services.Status
+    status: kakao.maps.services.Status,
   ) {
     if (status === kakao.maps.services.Status.OK) {
       console.log(result[0].address);

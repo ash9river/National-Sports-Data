@@ -1,11 +1,12 @@
 import MapContainer from '../Components/KakaoMap/MapContainer';
-import { Box } from '@mui/material';
+import SideBar from '../Components/KakaoMap/Sidebar';
 
 const FacilityPage = () => {
   return (
-    <Box>
+    <>
       <MapContainer />
-    </Box>
+      <SideBar />
+    </>
   );
 };
 
