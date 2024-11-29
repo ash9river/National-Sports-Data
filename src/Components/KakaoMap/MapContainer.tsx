@@ -4,11 +4,16 @@ import { useEffect, useState } from 'react';
 import useGeolocation from '../../Hooks/useGeolocation';
 import PanToCurrentPosition from './PanToCurrentPosition';
 import OpenTheList from './OpenTheList';
+import useFacilityDetailStore from '../../Contexts/useFacilityDetailStore';
 
 function MapContainer() {
   useKakaoLoader();
   const { position } = useGeolocation();
   const [map, setMap] = useState<kakao.maps.Map>();
+  const facilityDetailPosition = useFacilityDetailStore(
+    (state) => state.facilityDetailPosition,
+  );
+
   // react-kakao-sdk에서 컴포넌트 마운트 이후의 맵 컨트롤은
   // ref보다 useState를 활용하는 것을 추천함
   useEffect(() => {
@@ -22,6 +27,21 @@ function MapContainer() {
 
     map.setCenter(newCenter);
   }, [map, position]);
+
+  useEffect(() => {
+    if (!map) return;
+    if (!facilityDetailPosition) return;
+    if (
+      facilityDetailPosition.longitude !== 0 &&
+      facilityDetailPosition.latitude !== 0
+    ) {
+      const newCenter = new kakao.maps.LatLng(
+        facilityDetailPosition?.latitude,
+        facilityDetailPosition?.longitude,
+      );
+      map?.panTo(newCenter);
+    }
+  }, [facilityDetailPosition]);
 
   return (
     <Map // 지도를 표시할 Container

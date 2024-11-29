@@ -18,3 +18,13 @@ export interface FacilityListData {
   total_pages: number; // 총 페이지 수
   facilities: Facility[]; // 시설 목록
 }
+
+// 시설 목록 요청 구조
+
+export interface FacilityListRequest {
+  city_code: string;
+  district_code: string;
+  is_accessible_for_disabled: 'Y' | 'N';
+  page: number;
+  size: number;
+}
