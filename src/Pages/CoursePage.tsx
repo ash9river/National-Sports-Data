@@ -1,16 +1,61 @@
 import { useCourseQuery } from '../Hooks/useCourseQuery';
-import { useCourseStore } from '../Contexts/useCourseStore';
-import { useRef, useCallback } from 'react';
-import { Box, CircularProgress, Divider } from '@mui/material';
+import { useRef, useCallback, useEffect, useState } from 'react';
+import { Container } from '@mui/material';
+import useKakaoLoader from '../Hooks/useKakaoLoader';
+import useGeolocation from '../Hooks/useGeolocation';
+import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk';
+import OpenTheList from '../Components/KakaoMap/OpenTheList';
+import PanToCurrentPosition from '../Components/KakaoMap/PanToCurrentPosition';
+import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
+import SearchBox from '../Components/SearchBox';
+import CardList from '../Components/Course/CourseList';
 
 const CoursePage = () => {
-  const { fetchNextPage, isFetchingNextPage, hasNextPage, error, isLoading } =
-    useCourseQuery();
-  const courses = useCourseStore((state) => state.courses);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  useKakaoLoader();
 
+  // 초기 사용자 위치 설정
+  const { position: initialPosition } = useGeolocation();
+  const [position, setPosition] = useState(initialPosition);
+  const [map, setMap] = useState<kakao.maps.Map>();
+
+  // 사이드바 상태
+  const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
+
+  // 검색 조건 상태
+  const [searchParams, setSearchParams] = useState({
+    keyword: '',
+    city_code: '11', // 서울 기본값
+    isDisabledOnly: false,
+  });
+
+  // 강좌 데이터 쿼리
+  const {
+    data,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+    error,
+    isLoading,
+    refetch,
+  } = useCourseQuery(searchParams);
+
+  // 강좌 데이터 플랫맵
+  const courses = data?.pages.flatMap((page) => page.data?.courses ?? []) || [];
+
+  // 지도 이동
+  useEffect(() => {
+    if (!map || !position) return;
+    const newCenter = new kakao.maps.LatLng(
+      position.latitude,
+      position.longitude,
+    );
+    map.setCenter(newCenter);
+  }, [map, position]);
+
+  // IntersectionObserver로 스크롤 로드 처리
+  const observerRef = useRef<IntersectionObserver | null>(null);
   const lastCourseRef = useCallback(
-    (node: HTMLDivElement) => {
+    (node: HTMLDivElement | null) => {
       if (isFetchingNextPage) return;
       if (observerRef.current) observerRef.current.disconnect();
 
@@ -19,54 +64,81 @@ const CoursePage = () => {
           fetchNextPage();
         }
       });
+
       if (node) observerRef.current.observe(node);
     },
     [isFetchingNextPage, fetchNextPage, hasNextPage],
   );
 
-  if (error) return <div>강좌 정보가 없습니다</div>;
-  if (isLoading) {
-    return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <CircularProgress />
-      </Box>
-    );
-  }
+  // 검색 처리
+  const handleSearch = (params: {
+    keyword?: string;
+    city_code?: string;
+    isDisabledOnly?: boolean;
+  }) => {
+    console.log('Received Params from SearchBox:', params);
+    setSearchParams((prev) => ({ ...prev, ...params }));
+    refetch();
+  };
+
   return (
     <>
-      <h1>강좌 리스트</h1>
-      <ul>
-        {courses.map((course, index) => {
-          const isLastItem = index === courses.length - 1;
-          const courseContent = (
-            <Box>
-              <strong>{course.course_name}</strong>
-              <br />
-              요일: {course.weekday}
-              <br />
-              시간: {course.start_time} - {course.end_time}
-              <br />
-              {/* 내용: {course.course_seta_desc_cn} */}
-            </Box>
-          );
+      {/* 사이드바 검색 영역 */}
+      <Container
+        sx={{
+          position: 'absolute',
+          width: '390px',
+          height: 'calc(100vh - 65px)',
+          bgcolor: 'white',
+          top: '64px',
+          zIndex: 999,
+          padding: 0,
+          left: isOpen ? '240px' : '-150px',
+          transition: 'all 0.3s ease-in',
+        }}
+      >
+        <SearchBox onSearch={handleSearch} />
 
-          return (
-            <div
-              key={course.course_id}
-              ref={isLastItem ? lastCourseRef : undefined} // 마지막 항목만 lastCourseRef
-            >
-              {courseContent}
-              <Divider />
-            </div>
-          );
-        })}
-      </ul>
-      {isFetchingNextPage && <div>불러오는 중...</div>}
+        <CardList
+          courses={courses}
+          isLoading={isLoading}
+          error={error}
+          isFetchingNextPage={isFetchingNextPage}
+          lastCourseRef={lastCourseRef}
+          onLocationClick={(latitude, longitude) => {
+            setPosition({ latitude, longitude });
+            map?.setCenter(new kakao.maps.LatLng(latitude, longitude));
+          }}
+        />
+      </Container>
+
+      {/* 카카오 지도 */}
+      <Map
+        id="map"
+        center={{
+          lat: position?.latitude || 33.450701,
+          lng: position?.longitude || 126.570667,
+        }}
+        style={{
+          width: '100%',
+          height: 'calc(100vh - 65px)',
+        }}
+        level={6}
+        onCreate={setMap}
+      >
+        {position && (
+          <MapMarker
+            position={{ lat: position.latitude, lng: position.longitude }}
+            image={{
+              src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+              size: { width: 24, height: 35 },
+            }}
+          />
+        )}
+        <OpenTheList />
+        <PanToCurrentPosition />
+        <ZoomControl position="BOTTOMRIGHT" />
+      </Map>
     </>
   );
 };

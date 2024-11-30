@@ -6,7 +6,7 @@ interface SideBarIsOpenStore {
 }
 
 const useSideBarIsOpenStore = create<SideBarIsOpenStore>((set) => ({
-  isOpen: false,
+  isOpen: true,
   setIsOpen: (isOpen) => set({ isOpen }),
 }));
 

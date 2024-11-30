@@ -3,8 +3,8 @@ import { Course, CourseListData } from '../../Types/Course';
 import { ApiResponse } from '../../Types/ResponseType';
 
 interface GetCoursesParams {
-  sport_name?: string;
-  is_disabled_only?: 'Y' | 'N';
+  city_code?: string;
+  is_disabled_only: string;
   page: number;
   size: number;
 }
@@ -15,14 +15,16 @@ export const getCourses = async (
   signal?: AbortSignal,
 ): Promise<ApiResponse<CourseListData>> => {
   const query = new URLSearchParams({
-    ...(params.sport_name && { sport_name: params.sport_name }),
+    ...(params.city_code && {
+      city_code: params.city_code,
+    }),
     ...(params.is_disabled_only && {
       is_disabled_only: params.is_disabled_only,
     }),
     page: params.page.toString(),
     size: params.size.toString(),
   }).toString();
-
+  console.log(query);
   return getData<ApiResponse<CourseListData>>(`/courses?${query}`, signal);
 };
 
