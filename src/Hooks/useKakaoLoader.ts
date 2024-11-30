@@ -1,8 +1,8 @@
-import { useKakaoLoader as useKakaoLoaderOrigin } from "react-kakao-maps-sdk";
-import { KAKAO_MAP_APP_KEY } from "../Configs/ENV";
+import { useKakaoLoader as useKakaoLoaderOrigin } from 'react-kakao-maps-sdk';
+import { KAKAO_MAP_APP_KEY } from '../Configs/ENV';
 
 function useKakaoLoader() {
-  console.log(KAKAO_MAP_APP_KEY);
+  //console.log(KAKAO_MAP_APP_KEY);
 
   useKakaoLoaderOrigin({
     /**
@@ -12,7 +12,7 @@ function useKakaoLoader() {
      * @참고 https://apis.map.kakao.com/web/guide/
      */
     appkey: KAKAO_MAP_APP_KEY,
-    libraries: ["clusterer", "drawing", "services"],
+    libraries: ['clusterer', 'drawing', 'services'],
   });
 }
 

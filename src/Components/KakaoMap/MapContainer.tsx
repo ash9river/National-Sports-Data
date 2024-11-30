@@ -18,7 +18,7 @@ function MapContainer() {
       position?.latitude,
       position?.longitude,
     );
-    console.log(newCenter);
+    //console.log(newCenter);
 
     map.setCenter(newCenter);
   }, [map, position]);
