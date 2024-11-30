@@ -7,6 +7,7 @@ import {
 } from '@mui/material';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
 import findCity, { cityData } from '../Utils/findCity';
+import { City } from '../Types/CityAndDistrict';
 
 function CityAndDistrictSelect() {
   const cityName = useCityAndDistricctStore((state) => state.cityName);
@@ -25,7 +26,7 @@ function CityAndDistrictSelect() {
         label="광역시도"
         onChange={handleChange}
       >
-        {cityData.map((cityItem) => {
+        {cityData.map((cityItem: City) => {
           return (
             <MenuItem value={cityItem.cityName}>{cityItem.cityName}</MenuItem>
           );

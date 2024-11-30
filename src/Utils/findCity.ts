@@ -1,6 +1,6 @@
 import { City } from '../Types/CityAndDistrict';
 
-const cityData: City[] = [
+export const cityData: City[] = [
   {
     cityId: 1,
     cityName: '서울특별시',
