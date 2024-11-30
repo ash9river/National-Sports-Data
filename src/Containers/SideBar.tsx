@@ -1,14 +1,16 @@
 import { Container, Pagination } from '@mui/material';
 import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
 import useFacilityQuery from '../Hooks/useFacilityQuery';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   Facility,
   FacilityListData,
   FacilityListRequest,
+  facilityListResponseData,
 } from '../Types/Facility';
 import FacilityCard from '../Components/Facility/FacilityCard';
 import { ApiResponse } from '../Types/ResponseType';
+import useFacilityPaginationQuery from '../Hooks/useFacilityPaginationQuery';
 
 const facilityTmpData: ApiResponse<FacilityListData> = {
   status: 200,
@@ -18,7 +20,7 @@ const facilityTmpData: ApiResponse<FacilityListData> = {
     page: 1,
     size: 10,
     total_pages: 5,
-    facilities: [
+    data: [
       {
         facility_id: 1,
         facility_name: '서울 체육관',
@@ -55,6 +57,7 @@ function SideBar() {
     size: 10,
   };
   const { data: facilityData } = useFacilityQuery(tmpData);
+  const { data: pageNationData } = useFacilityPaginationQuery({ size: 10 });
 
   function handleChange(event: ChangeEvent<unknown>, page: number) {
     setPage(page);
@@ -75,25 +78,27 @@ function SideBar() {
       }}
     >
       {
-        facilityTmpData !== undefined && (
+        facilityData?.data !== undefined && (
           <>
-            {facilityTmpData.data?.facilities.map((facilityItem: Facility) => {
+            {facilityData.data.map((facilityItem: facilityListResponseData) => {
               return (
                 <>
                   <FacilityCard facilityItem={facilityItem} />
                 </>
               );
             })}
-            <Pagination
-              count={facilityTmpData.data?.total_count}
-              page={page}
-              onChange={handleChange}
-            />
           </>
         )
         // 전체 카운트를 알아내는 api는 따로 만들어달라 요청
         // 그후스켈레톤 ui 적용
       }
+      {pageNationData?.data !== undefined && (
+        <Pagination
+          count={pageNationData.data.totalCount}
+          page={page}
+          onChange={handleChange}
+        />
+      )}
     </Container>
   );
 }

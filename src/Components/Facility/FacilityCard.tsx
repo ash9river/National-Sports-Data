@@ -6,21 +6,26 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Facility } from '../../Types/Facility';
+import { Facility, facilityListResponseData } from '../../Types/Facility';
 import useFacilityDetailStore from '../../Contexts/useFacilityDetailStore';
 
-function FacilityCard({ facilityItem }: { facilityItem: Facility }) {
+function FacilityCard({
+  facilityItem,
+}: {
+  facilityItem: facilityListResponseData;
+}) {
   const setFacilityId = useFacilityDetailStore((state) => state.setFacilityId);
   const setFacilityDetailPosition = useFacilityDetailStore(
     (state) => state.setFacilityDetailPosition,
   );
 
   function handleOnClick() {
-    setFacilityId(facilityItem.facility_id);
-    setFacilityDetailPosition({
-      latitude: facilityItem.latitude,
-      longitude: facilityItem.longitude,
-    });
+    setFacilityId(facilityItem.facilityId);
+    if (facilityItem.latitude && facilityItem.longitude)
+      setFacilityDetailPosition({
+        latitude: facilityItem.latitude,
+        longitude: facilityItem.longitude,
+      });
   }
 
   return (
@@ -41,16 +46,17 @@ function FacilityCard({ facilityItem }: { facilityItem: Facility }) {
             component="div"
             sx={{ fontWeight: 700 }}
           >
-            {facilityItem.facility_name}
+            {facilityItem.facilityName}
           </Typography>
           <Typography gutterBottom variant="h6">
-            {facilityItem.is_accessible_for_disabled}
+            {facilityItem.isAccessibleForDisabled && 'Y'}
+            {!facilityItem.isAccessibleForDisabled && 'N'}
           </Typography>
         </Stack>
-        <Typography>{facilityItem.road_address}</Typography>
+        <Typography>{facilityItem.roadAddress}</Typography>
         <Stack direction="row" spacing={1}>
-          <Typography>{facilityItem.facility_type}</Typography>
-          <Typography>{facilityItem.facility_status}</Typography>
+          <Typography>{facilityItem.facilityType}</Typography>
+          <Typography>{facilityItem.facilityStatus}</Typography>
         </Stack>
       </CardContent>
       <CardActions>

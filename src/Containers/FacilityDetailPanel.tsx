@@ -4,7 +4,6 @@ import useFacilityQuery from '../Hooks/useFacilityQuery';
 import { FacilityListRequest } from '../Types/Facility';
 import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
 import FacilityCard from '../Components/Facility/FacilityCard';
-import { useEffect } from 'react';
 
 function FacilityDetailPanel() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
@@ -17,18 +16,13 @@ function FacilityDetailPanel() {
     page: 1,
     size: 10,
   };
-  const { data: faciltiyDetailItem } = useFacilityQuery(tmpData, (data) => {
-    return data.data?.facilities.filter(
-      (facility) => facility.facility_id === faciltiyId,
-    );
+  const { data: facilityDetailItem } = useFacilityQuery(tmpData, (data) => {
+    console.log(data);
+    return {
+      ...data,
+      data: data.data?.filter((facility) => facility.facilityId === faciltiyId),
+    };
   });
-
-  useEffect(() => {
-    console.log('테스트');
-    console.log(faciltiyId);
-
-    console.log(faciltiyDetailItem);
-  }, [faciltiyDetailItem]);
 
   return (
     <Container
@@ -43,7 +37,11 @@ function FacilityDetailPanel() {
         left: isOpen ? '240px' : '-150px',
         transition: 'all 0.3s ease-in',
       }}
-    ></Container>
+    >
+      {facilityDetailItem?.data && facilityDetailItem.data.length > 0 && (
+        <FacilityCard facilityItem={facilityDetailItem.data[0]} />
+      )}
+    </Container>
   );
 }
 

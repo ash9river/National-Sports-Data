@@ -10,13 +10,38 @@ export interface Facility {
   is_accessible_for_disabled: 'Y' | 'N'; // 장애인 이용 가능 여부
 }
 
+export interface facilityListResponseData {
+  facilityId: number;
+  facilityName: string;
+  facilityType: string;
+  facilityStatus: string;
+  roadAddress: string;
+  detailAddress: string | null;
+  zipCode: string;
+  longitude: number | null;
+  latitude: number | null;
+  inOutType: string | null;
+  nationFlag: string;
+  cityName: string;
+  districtName: string;
+  generalFacilityId: number | null;
+  generalBrno: string | null;
+  generalFacilSn: string | null;
+  generalResTelno: string | null;
+  generalMainEventName: string | null;
+  disabledFacilityId: number | null;
+  disabledResTelno: string | null;
+  disabledMainEventName: string | null;
+  isAccessibleForDisabled: string | null;
+}
+
 // 시설 목록 데이터 구조
 export interface FacilityListData {
   total_count: number; // 총 시설 수
   page: number; // 현재 페이지 번호
   size: number; // 페이지당 항목 수
   total_pages: number; // 총 페이지 수
-  facilities: Facility[]; // 시설 목록
+  data: Facility[]; // 시설 목록
 }
 
 // 시설 목록 요청 구조
@@ -27,4 +52,17 @@ export interface FacilityListRequest {
   is_accessible_for_disabled: 'Y' | 'N';
   page: number;
   size: number;
+}
+
+export interface FacilityPaginationRequest {
+  cityId?: string;
+  districtId?: string;
+  isAccessibleForDisabled?: string;
+  size: number;
+}
+
+export interface FacilityPaginationResponse {
+  totalPages: number;
+  pageSize: number;
+  totalCount: number;
 }

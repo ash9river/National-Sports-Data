@@ -1,10 +1,10 @@
 import { Map, ZoomControl } from 'react-kakao-maps-sdk';
-import useKakaoLoader from '../../Hooks/useKakaoLoader';
+import useKakaoLoader from '../Hooks/useKakaoLoader';
 import { useEffect, useState } from 'react';
-import useGeolocation from '../../Hooks/useGeolocation';
-import PanToCurrentPosition from './PanToCurrentPosition';
-import OpenTheList from './OpenTheList';
-import useFacilityDetailStore from '../../Contexts/useFacilityDetailStore';
+import useGeolocation from '../Hooks/useGeolocation';
+import PanToCurrentPosition from '../Components/KakaoMap/PanToCurrentPosition';
+import OpenTheList from '../Components/KakaoMap/OpenTheList';
+import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
 
 function MapContainer() {
   useKakaoLoader();
@@ -59,6 +59,7 @@ function MapContainer() {
       level={6} // 지도의 확대 레벨
       onCreate={setMap}
     >
+      {}
       {/* queryResult.map((position: any, index: number) => (
         <MapMarker
           key={`${position.title}-${position.latlng}-${index}`}

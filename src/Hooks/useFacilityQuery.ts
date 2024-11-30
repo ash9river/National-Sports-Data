@@ -4,17 +4,20 @@ import {
   Facility,
   FacilityListData,
   FacilityListRequest,
+  facilityListResponseData,
 } from '../Types/Facility';
 import { ApiResponse } from '../Types/ResponseType';
 
 function useFacilityQuery(
   req: FacilityListRequest,
-  select?: (data: ApiResponse<FacilityListData>) => Facility[] | undefined,
+  select?: (
+    data: ApiResponse<facilityListResponseData[]>,
+  ) => ApiResponse<facilityListResponseData[]> | undefined,
 ) {
   return useQuery({
     queryKey: ['facility', req],
     queryFn: ({ signal }) =>
-      getData<ApiResponse<FacilityListData>>('facilities', signal),
+      getData<ApiResponse<facilityListResponseData[]>>('facilities', signal),
     select,
   });
 }

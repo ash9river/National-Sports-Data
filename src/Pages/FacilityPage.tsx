@@ -1,4 +1,4 @@
-import MapContainer from '../Components/KakaoMap/MapContainer';
+import MapContainer from '../Containers/MapContainer';
 import FacilityDetailPanel from '../Containers/FacilityDetailPanel';
 import SideBar from '../Containers/SideBar';
 import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
