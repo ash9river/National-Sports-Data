@@ -24,7 +24,7 @@ export const facilityListResponse = {
       disabledFacilityId: null,
       disabledResTelno: null,
       disabledMainEventName: null,
-      isAccessibleForDisabled: null,
+      isAccessibleForDisabled: 'Y',
     },
     {
       facilityId: 14351,

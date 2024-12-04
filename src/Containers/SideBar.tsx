@@ -11,6 +11,7 @@ import {
 import FacilityCard from '../Components/Facility/FacilityCard';
 import { ApiResponse } from '../Types/ResponseType';
 import useFacilityPaginationQuery from '../Hooks/useFacilityPaginationQuery';
+import CityAndDistrictSelect from './CityAndDistrictSelect';
 
 const facilityTmpData: ApiResponse<FacilityListData> = {
   status: 200,
@@ -77,6 +78,7 @@ function SideBar() {
         transition: 'all 0.3s ease-in',
       }}
     >
+      <CityAndDistrictSelect />
       {
         facilityData?.data !== undefined && (
           <>
@@ -97,6 +99,9 @@ function SideBar() {
           count={pageNationData.data.totalCount}
           page={page}
           onChange={handleChange}
+          hidePrevButton
+          hideNextButton
+          sx={{ display: 'flex', justifyContent: 'center' }}
         />
       )}
     </Container>

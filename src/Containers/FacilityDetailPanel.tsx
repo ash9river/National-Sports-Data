@@ -1,9 +1,15 @@
-import { Container } from '@mui/material';
+import { Box, Container, Pagination } from '@mui/material';
 import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
 import useFacilityQuery from '../Hooks/useFacilityQuery';
 import { FacilityListRequest } from '../Types/Facility';
 import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
 import FacilityCard from '../Components/Facility/FacilityCard';
+import useFacilityDetailCourseQuery from '../Hooks/useFacilityDetailCourseQuery';
+import CourseCard from '../Components/Course/CourseCard';
+import { Course } from '../Types/Course';
+import { useEffect } from 'react';
+import FacilityDetailCourseCard from '../Components/Facility/FacilityDetailCourseCard';
+import CloseFacilityDetailPanelButton from '../Components/Facility/CloseFacilityDetailPanelButton';
 
 function FacilityDetailPanel() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
@@ -24,6 +30,13 @@ function FacilityDetailPanel() {
     };
   });
 
+  const { data: facilityDetailCoursesItem } = useFacilityDetailCourseQuery();
+
+  function handleNothing() {
+    console.log('asd');
+  }
+  console.log('rendered');
+
   return (
     <Container
       sx={{
@@ -36,11 +49,30 @@ function FacilityDetailPanel() {
         p: '0',
         left: isOpen ? '240px' : '-150px',
         transition: 'all 0.3s ease-in',
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar': {
+          display: 'none', // Chrome, Safari, Opera
+        },
+        '-ms-overflow-style': 'none', // IE and Edge
+        'scrollbar-width': 'none', // Firefox
       }}
     >
       {facilityDetailItem?.data && facilityDetailItem.data.length > 0 && (
         <FacilityCard facilityItem={facilityDetailItem.data[0]} />
       )}
+      <CloseFacilityDetailPanelButton />
+      <Box>
+        {facilityDetailCoursesItem?.data &&
+          facilityDetailCoursesItem.data.courses.map((item: Course) => {
+            return <FacilityDetailCourseCard courseItem={item} />;
+          })}
+      </Box>
+      <Pagination
+        count={100}
+        hidePrevButton
+        hideNextButton
+        sx={{ display: 'flex', justifyContent: 'center' }}
+      />
     </Container>
   );
 }

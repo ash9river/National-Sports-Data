@@ -40,6 +40,7 @@ function MapContainer() {
         facilityDetailPosition?.longitude,
       );
       map?.panTo(newCenter);
+      map.setLevel(5);
     }
   }, [facilityDetailPosition]);
 

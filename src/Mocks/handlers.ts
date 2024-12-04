@@ -1,5 +1,6 @@
 import { http, HttpResponse } from 'msw';
 import { facilityListResponse } from './facility';
+import { facilityDetailCoures } from './facilityDetailCourses';
 
 export const handlers = [
   http.get('/hello', () => {
@@ -21,10 +22,36 @@ export const handlers = [
       status: 200,
       message: '페이지네이션 정보 조회 성공',
       data: {
-        totalPage: 78,
+        totalPages: 78,
         pageSize: 100,
         totalCount: 7715,
       },
+    });
+  }),
+  http.get('/api/districts', () => {
+    return HttpResponse.json({
+      status: 200,
+      message: '지역 목록 조회 성공',
+      data: [
+        {
+          districtId: 1,
+          districtName: '강남구',
+          districtCode: '101',
+        },
+        {
+          districtId: 2,
+          districtName: '서초구',
+          districtCode: '102',
+        },
+      ],
+    });
+  }),
+  http.get('/api/facilities/facilityId/courses', () => {
+    console.log(facilityDetailCoures.data);
+
+    return HttpResponse.json({
+      status: 200,
+      data: facilityDetailCoures.data,
     });
   }),
 ];

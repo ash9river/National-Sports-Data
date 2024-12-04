@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { Facility, facilityListResponseData } from '../../Types/Facility';
 import useFacilityDetailStore from '../../Contexts/useFacilityDetailStore';
+import AccessibleIcon from '@mui/icons-material/Accessible';
 
 function FacilityCard({
   facilityItem,
@@ -48,10 +49,13 @@ function FacilityCard({
           >
             {facilityItem.facilityName}
           </Typography>
-          <Typography gutterBottom variant="h6">
-            {facilityItem.isAccessibleForDisabled && 'Y'}
-            {!facilityItem.isAccessibleForDisabled && 'N'}
-          </Typography>
+          {facilityItem.isAccessibleForDisabled === 'Y' && (
+            <AccessibleIcon
+              sx={{
+                mb: '0.35em',
+              }}
+            />
+          )}
         </Stack>
         <Typography>{facilityItem.roadAddress}</Typography>
         <Stack direction="row" spacing={1}>
