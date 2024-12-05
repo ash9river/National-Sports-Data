@@ -25,12 +25,11 @@ function FacilityDetailCourseCard({ courseItem }: { courseItem: Course }) {
             component="div"
             sx={{ fontWeight: 700 }}
           >
-            {courseItem.course_name}
+            {courseItem.courseName}
           </Typography>
           {/* 시간 정보 */}
           <Typography variant="body2" sx={{ mb: 1 }}>
-            <strong>시간:</strong> {courseItem.start_time} -{' '}
-            {courseItem.end_time}
+            <strong>시간:</strong> {courseItem.startTime} - {courseItem.endTime}
           </Typography>
 
           {/* 요일 정보 */}
@@ -40,7 +39,7 @@ function FacilityDetailCourseCard({ courseItem }: { courseItem: Course }) {
 
           {/* 강좌 설명 */}
           <Typography variant="body2" sx={{ mb: 1 }}>
-            {courseItem.course_desc}
+            {courseItem.description}
           </Typography>
 
           {/* 강좌 수강료 */}

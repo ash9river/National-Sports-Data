@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { FacilityListRequest } from '../Types/Facility';
 
 interface useFacilityStore extends Omit<FacilityListRequest, 'size'> {
-  setCity_code: (city_code: string) => void;
+  setCity_code: (cityCode: string) => void;
   setDistrict_code: (district_code: string) => void;
   setIs_accessible_for_disabled: (
     is_accessible_for_disabled: 'Y' | 'N',
@@ -11,7 +11,7 @@ interface useFacilityStore extends Omit<FacilityListRequest, 'size'> {
 }
 
 /* const useFacilityStore = create<useFacilityStore>((set) => ({
-  city_code:"11",
+  cityCode:"11",
 district_code
 }));
 

@@ -17,10 +17,10 @@ const facilityTmpData: ApiResponse<FacilityListData> = {
   status: 200,
   message: '체육시설 목록 조회 성공',
   data: {
-    total_count: 45,
+    totalCount: 45,
     page: 1,
     size: 10,
-    total_pages: 5,
+    totalPages: 5,
     data: [
       {
         facility_id: 1,
@@ -51,7 +51,7 @@ function SideBar() {
   const [page, setPage] = useState<number>(0);
 
   const tmpData: FacilityListRequest = {
-    city_code: '11',
+    cityCode: '11',
     district_code: '123',
     is_accessible_for_disabled: 'Y',
     page,

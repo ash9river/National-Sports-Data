@@ -37,17 +37,17 @@ export interface facilityListResponseData {
 
 // 시설 목록 데이터 구조
 export interface FacilityListData {
-  total_count: number; // 총 시설 수
+  totalCount: number; // 총 시설 수
   page: number; // 현재 페이지 번호
   size: number; // 페이지당 항목 수
-  total_pages: number; // 총 페이지 수
+  totalPages: number; // 총 페이지 수
   data: Facility[]; // 시설 목록
 }
 
 // 시설 목록 요청 구조
 
 export interface FacilityListRequest {
-  city_code: string;
+  cityCode: string;
   district_code: string;
   is_accessible_for_disabled: 'Y' | 'N';
   page: number;

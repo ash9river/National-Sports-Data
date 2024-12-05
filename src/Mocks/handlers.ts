@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { facilityListResponse } from './facility';
 import { facilityDetailCoures } from './facilityDetailCourses';
+import { courses } from './courses';
 
 export const handlers = [
   http.get('/hello', () => {
@@ -35,13 +36,23 @@ export const handlers = [
       data: [
         {
           districtId: 1,
-          districtName: '강남구',
-          districtCode: '101',
+          districtName: '종로구',
+          districtCode: '110',
         },
         {
           districtId: 2,
-          districtName: '서초구',
-          districtCode: '102',
+          districtName: '중구',
+          districtCode: '140',
+        },
+        {
+          districtId: 3,
+          districtName: '용산구',
+          districtCode: '170',
+        },
+        {
+          districtId: 4,
+          districtName: '중랑구',
+          districtCode: '260',
         },
       ],
     });
@@ -52,6 +63,13 @@ export const handlers = [
     return HttpResponse.json({
       status: 200,
       data: facilityDetailCoures.data,
+    });
+  }),
+
+  http.get('/api/courses', () => {
+    return HttpResponse.json({
+      status: 200,
+      data: courses.data,
     });
   }),
 ];

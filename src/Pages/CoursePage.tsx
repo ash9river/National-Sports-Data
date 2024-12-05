@@ -9,6 +9,7 @@ import PanToCurrentPosition from '../Components/KakaoMap/PanToCurrentPosition';
 import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
 import SearchBox from '../Components/SearchBox';
 import CardList from '../Components/Course/CourseList';
+import useCityAndDistrictStore from '../Contexts/useCityAndDistrictStore';
 
 const CoursePage = () => {
   useKakaoLoader();
@@ -23,8 +24,8 @@ const CoursePage = () => {
 
   // 검색 조건 상태
   const [searchParams, setSearchParams] = useState({
-    keyword: '',
-    city_code: '11', // 서울 기본값
+    cityCode: '11', // 서울 기본값
+    districtCode: '110', // 종로구 기본값
     isDisabledOnly: false,
   });
 
@@ -71,13 +72,21 @@ const CoursePage = () => {
   );
 
   // 검색 처리
-  const handleSearch = (params: {
-    keyword?: string;
-    city_code?: string;
-    isDisabledOnly?: boolean;
-  }) => {
-    console.log('Received Params from SearchBox:', params);
-    setSearchParams((prev) => ({ ...prev, ...params }));
+  const handleSearch = (params: {}) => {
+    const { cityCode, districtCode, isAccessibleForDisabled } =
+      useCityAndDistrictStore.getState(); // Zustand 상태값 가져오기
+
+    const searchParams = {
+      cityCode: cityCode,
+      districtCode: districtCode,
+      isDisabledOnly: isAccessibleForDisabled,
+    };
+
+    console.log('Search Params:', searchParams);
+
+    setSearchParams((prev) => ({ ...prev, ...searchParams }));
+
+    // refetch를 통해 새로운 검색 조건으로 데이터 다시 가져오기
     refetch();
   };
 

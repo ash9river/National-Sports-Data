@@ -1,7 +1,7 @@
 import { CourseListData } from '../Types/Course';
 import { ApiResponse } from '../Types/ResponseType';
 
-export const facilityDetailCoures: ApiResponse<CourseListData> = {
+export const courses: ApiResponse<CourseListData> = {
   status: 200,
   message: '강좌 목록 조회 성공',
   data: {
@@ -20,7 +20,7 @@ export const facilityDetailCoures: ApiResponse<CourseListData> = {
         weekday: '1111100',
         description: null,
         fee: '110000',
-        isAccessibleForDisabled: 'Y',
+        isAccessibleForDisabled: 'Y' as 'Y' | 'N',
         cityName: '전북',
         districtName: '김제시',
         roadAddr: '전라북도 김제시 도작9길 14',
@@ -46,6 +46,27 @@ export const facilityDetailCoures: ApiResponse<CourseListData> = {
         latitude: 35.8029303907,
         longitude: 126.8980511609,
       },
+      ...Array.from({ length: 18 }, (_, index) => {
+        const id = index + 3;
+        return {
+          courseId: id,
+          busiRegNo: `53395012${19 + id}`,
+          sportName: '검도',
+          courseName: `검도교실 ${id}`,
+          startTime: '15:30:00',
+          endTime: '20:30:00',
+          weekday: '1111100',
+          description: null,
+          fee: `${110000 + id * 1000}`,
+          isAccessibleForDisabled: (id % 2 === 0 ? 'Y' : 'N') as 'Y' | 'N',
+          cityName: '전북',
+          districtName: '김제시',
+          roadAddr: `전라북도 김제시 도작${id}길 14`,
+          faciDaddr: `금만검도관(신풍동) ${id}`,
+          latitude: 35.8029303907 + id * 0.001,
+          longitude: 126.8980511609 + id * 0.001,
+        };
+      }),
     ],
   },
 };

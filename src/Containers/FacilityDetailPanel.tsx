@@ -16,7 +16,7 @@ function FacilityDetailPanel() {
   const faciltiyId = useFacilityDetailStore((state) => state.facilityId);
 
   const tmpData: FacilityListRequest = {
-    city_code: '11',
+    cityCode: '11',
     district_code: '123',
     is_accessible_for_disabled: 'Y',
     page: 1,

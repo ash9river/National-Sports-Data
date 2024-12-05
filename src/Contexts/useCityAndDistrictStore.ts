@@ -9,7 +9,7 @@ interface useCityAndDistricctStore extends City, District {
     districtCode: string,
     districtName: string,
   ) => void;
-  setISAccessibleForDisabled: (isAccessibleForDisabled: boolean) => void;
+  setIsAccessibleForDisabled: (isAccessibleForDisabled: boolean) => void;
 }
 
 const useCityAndDistricctStore = create<useCityAndDistricctStore>((set) => ({
@@ -23,7 +23,7 @@ const useCityAndDistricctStore = create<useCityAndDistricctStore>((set) => ({
   setCity: (cityId, cityCode, cityName) => set({ cityId, cityCode, cityName }),
   setDistrict: (districtId, districtCode, districtName) =>
     set({ districtId, districtCode, districtName }),
-  setISAccessibleForDisabled: (isAccessibleForDisabled) =>
+  setIsAccessibleForDisabled: (isAccessibleForDisabled) =>
     set({ isAccessibleForDisabled }),
 }));
 
