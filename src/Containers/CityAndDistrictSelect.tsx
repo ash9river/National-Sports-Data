@@ -21,14 +21,12 @@ function CityAndDistrictSelect() {
   const setCity = useCityAndDistricctStore((state) => state.setCity);
   const setDistrict = useCityAndDistricctStore((state) => state.setDistrict);
   const setIsAccessibleForDisabled = useCityAndDistricctStore(
-    (state) => state.setISAccessibleForDisabled,
+    (state) => state.setIsAccessibleForDisabled,
   );
 
   const { data: DistrictData } = useDistrictQuery(cityId.toString());
 
   function handleChange(event: SelectChangeEvent) {
-    console.log(event.target.name);
-
     if (event.target.name === 'city') {
       const { cityId, cityName, cityCode } = findCity(event.target.value);
       setCity(cityId, cityCode, cityName);
@@ -47,7 +45,11 @@ function CityAndDistrictSelect() {
   }
 
   function handleToggle() {
-    setIsAccessibleForDisabled(!isAccessibleForDisabled);
+    if (isAccessibleForDisabled === 'Y') {
+      setIsAccessibleForDisabled('N');
+    } else {
+      setIsAccessibleForDisabled('Y');
+    }
   }
 
   return (
@@ -95,7 +97,7 @@ function CityAndDistrictSelect() {
       <Grid2 size={2}>
         <ToggleButton
           value="isAccessibleForDisabled"
-          selected={isAccessibleForDisabled}
+          selected={isAccessibleForDisabled === 'Y'}
           onChange={handleToggle}
           size="large"
         >

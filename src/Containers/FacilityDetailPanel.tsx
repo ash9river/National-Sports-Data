@@ -1,41 +1,42 @@
 import { Box, Container, Pagination } from '@mui/material';
 import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
 import useFacilityQuery from '../Hooks/useFacilityQuery';
-import { FacilityListRequest } from '../Types/Facility';
+import { FacilityDetailCoursesProps } from '../Types/Facility';
 import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
 import FacilityCard from '../Components/Facility/FacilityCard';
-import useFacilityDetailCourseQuery from '../Hooks/useFacilityDetailCourseQuery';
-import CourseCard from '../Components/Course/CourseCard';
-import { Course } from '../Types/Course';
-import { useEffect } from 'react';
 import FacilityDetailCourseCard from '../Components/Facility/FacilityDetailCourseCard';
 import CloseFacilityDetailPanelButton from '../Components/Facility/CloseFacilityDetailPanelButton';
+import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
 
 function FacilityDetailPanel() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
   const faciltiyId = useFacilityDetailStore((state) => state.facilityId);
 
-  const tmpData: FacilityListRequest = {
-    city_code: '11',
-    district_code: '123',
-    is_accessible_for_disabled: 'Y',
-    page: 1,
-    size: 10,
-  };
-  const { data: facilityDetailItem } = useFacilityQuery(tmpData, (data) => {
-    console.log(data);
-    return {
-      ...data,
-      data: data.data?.filter((facility) => facility.facilityId === faciltiyId),
-    };
-  });
+  const cityId = useCityAndDistricctStore((state) => state.cityId);
+  const districtId = useCityAndDistricctStore((state) => state.districtId);
+  const isAccessibleForDisabled = useCityAndDistricctStore(
+    (state) => state.isAccessibleForDisabled,
+  );
+  const page = useCityAndDistricctStore((state) => state.page);
 
-  const { data: facilityDetailCoursesItem } = useFacilityDetailCourseQuery();
-
-  function handleNothing() {
-    console.log('asd');
-  }
-  console.log('rendered');
+  const { data: facilityDetailItem } = useFacilityQuery(
+    {
+      cityId,
+      districtId,
+      isAccessibleForDisabled,
+      page,
+      size: 10,
+    },
+    (data) => {
+      console.log(data);
+      return {
+        ...data,
+        data: data.data?.filter(
+          (facility) => facility.facilityId === faciltiyId,
+        ),
+      };
+    },
+  );
 
   return (
     <Container
@@ -62,17 +63,20 @@ function FacilityDetailPanel() {
       )}
       <CloseFacilityDetailPanelButton />
       <Box>
-        {facilityDetailCoursesItem?.data &&
-          facilityDetailCoursesItem.data.courses.map((item: Course) => {
-            return <FacilityDetailCourseCard courseItem={item} />;
-          })}
+        {facilityDetailItem?.data &&
+          facilityDetailItem.data[0].courses.map(
+            (item: FacilityDetailCoursesProps) => {
+              return <FacilityDetailCourseCard courseItem={item} />;
+            },
+          )}
       </Box>
-      <Pagination
+
+      {/*       <Pagination
         count={100}
         hidePrevButton
         hideNextButton
         sx={{ display: 'flex', justifyContent: 'center' }}
-      />
+      /> */}
     </Container>
   );
 }

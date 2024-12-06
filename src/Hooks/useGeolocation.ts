@@ -9,7 +9,6 @@ function useGeolocation() {
   const [position, setPosition] = useState<PositionType>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<string>('');
-  console.log(position);
   useEffect(() => {
     if (!navigator.geolocation) {
       setIsError('Geolocation is not supported by this browser.');
@@ -18,10 +17,6 @@ function useGeolocation() {
     }
 
     const successHandler = (position: GeolocationPosition) => {
-      console.log(JSON.stringify(position));
-      console.log(position.coords.latitude);
-      console.log(position.coords.longitude);
-
       setPosition({
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,

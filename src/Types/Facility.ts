@@ -10,6 +10,25 @@ export interface Facility {
   is_accessible_for_disabled: 'Y' | 'N'; // 장애인 이용 가능 여부
 }
 
+export interface FacilityDetailCoursesProps {
+  courseId: number;
+  busiRegNo: string | null;
+  sportName: string | null;
+  courseName: string;
+  startTime: string;
+  endTime: string;
+  weekday: string;
+  description: string | null;
+  fee: string | null;
+  isAccessibleForDisabled: 'Y' | 'N';
+  cityName: string | null;
+  districtName: string | null;
+  roadAddr: string | null;
+  faciDaddr: string | null;
+  latitude: number | null;
+  longitude: number | null;
+}
+
 export interface facilityListResponseData {
   facilityId: number;
   facilityName: string;
@@ -22,8 +41,6 @@ export interface facilityListResponseData {
   latitude: number | null;
   inOutType: string | null;
   nationFlag: string;
-  cityName: string;
-  districtName: string;
   generalFacilityId: number | null;
   generalBrno: string | null;
   generalFacilSn: string | null;
@@ -32,7 +49,8 @@ export interface facilityListResponseData {
   disabledFacilityId: number | null;
   disabledResTelno: string | null;
   disabledMainEventName: string | null;
-  isAccessibleForDisabled: string | null;
+  isAccessibleForDisabled: 'Y' | 'N';
+  courses: FacilityDetailCoursesProps[];
 }
 
 // 시설 목록 데이터 구조
@@ -47,9 +65,9 @@ export interface FacilityListData {
 // 시설 목록 요청 구조
 
 export interface FacilityListRequest {
-  city_code: string;
-  district_code: string;
-  is_accessible_for_disabled: 'Y' | 'N';
+  cityId: string;
+  districtId: string;
+  isAccessibleForDisabled: 'Y' | 'N';
   page: number;
   size: number;
 }

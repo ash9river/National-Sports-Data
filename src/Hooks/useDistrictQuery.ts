@@ -8,7 +8,7 @@ function useDistrictQuery(cityId: string) {
   return useQuery({
     queryKey: ['district', cityId],
     queryFn: ({ signal }) =>
-      getData<ApiResponse<District[]>>(`districts`, signal),
+      getData<ApiResponse<District[]>>(`districts/${cityId}`, signal),
   });
 }
 

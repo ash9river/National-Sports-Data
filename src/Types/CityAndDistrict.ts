@@ -1,10 +1,10 @@
 export interface City {
-  cityId: number;
+  cityId: string;
   cityName: string;
   cityCode: string;
 }
 export interface District {
-  districtId: number;
+  districtId: string;
   districtCode: string;
   districtName: string;
 }

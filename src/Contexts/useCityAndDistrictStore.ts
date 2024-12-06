@@ -2,29 +2,33 @@ import { create } from 'zustand';
 import { City, District } from '../Types/CityAndDistrict';
 
 interface useCityAndDistricctStore extends City, District {
-  isAccessibleForDisabled: boolean;
-  setCity: (cityId: number, cityCode: string, cityName: string) => void;
+  isAccessibleForDisabled: 'Y' | 'N';
+  page: number;
+  setCity: (cityId: string, cityCode: string, cityName: string) => void;
   setDistrict: (
-    districtId: number,
+    districtId: string,
     districtCode: string,
     districtName: string,
   ) => void;
-  setISAccessibleForDisabled: (isAccessibleForDisabled: boolean) => void;
+  setIsAccessibleForDisabled: (isAccessibleForDisabled: 'Y' | 'N') => void;
+  setPage: (page: number) => void;
 }
 
 const useCityAndDistricctStore = create<useCityAndDistricctStore>((set) => ({
-  isAccessibleForDisabled: false,
-  cityId: 1,
+  isAccessibleForDisabled: 'N',
+  cityId: '1',
   cityCode: '11',
   cityName: '서울특별시',
-  districtId: 1,
+  districtId: '1',
   districtCode: '110',
   districtName: '종로구',
+  page: 1,
   setCity: (cityId, cityCode, cityName) => set({ cityId, cityCode, cityName }),
   setDistrict: (districtId, districtCode, districtName) =>
     set({ districtId, districtCode, districtName }),
-  setISAccessibleForDisabled: (isAccessibleForDisabled) =>
+  setIsAccessibleForDisabled: (isAccessibleForDisabled) =>
     set({ isAccessibleForDisabled }),
+  setPage: (page) => set({ page }),
 }));
 
 export default useCityAndDistricctStore;

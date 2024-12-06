@@ -9,56 +9,35 @@ import {
   facilityListResponseData,
 } from '../Types/Facility';
 import FacilityCard from '../Components/Facility/FacilityCard';
-import { ApiResponse } from '../Types/ResponseType';
 import useFacilityPaginationQuery from '../Hooks/useFacilityPaginationQuery';
 import CityAndDistrictSelect from './CityAndDistrictSelect';
-
-const facilityTmpData: ApiResponse<FacilityListData> = {
-  status: 200,
-  message: '체육시설 목록 조회 성공',
-  data: {
-    total_count: 45,
-    page: 1,
-    size: 10,
-    total_pages: 5,
-    data: [
-      {
-        facility_id: 1,
-        facility_name: '서울 체육관',
-        facility_type: '실내',
-        facility_status: '정상운영',
-        road_address: '서울특별시 종로구 종로 1',
-        latitude: 37.5704,
-        longitude: 126.986,
-        is_accessible_for_disabled: 'Y',
-      },
-      {
-        facility_id: 2,
-        facility_name: '강남 스포츠센터',
-        facility_type: '실외',
-        facility_status: '정상운영',
-        road_address: '서울특별시 강남구 테헤란로 12',
-        latitude: 37.5012,
-        longitude: 127.0246,
-        is_accessible_for_disabled: 'N',
-      },
-    ],
-  },
-};
+import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
 
 function SideBar() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
-  const [page, setPage] = useState<number>(0);
 
-  const tmpData: FacilityListRequest = {
-    city_code: '11',
-    district_code: '123',
-    is_accessible_for_disabled: 'Y',
+  const cityId = useCityAndDistricctStore((state) => state.cityId);
+  const districtId = useCityAndDistricctStore((state) => state.districtId);
+  const isAccessibleForDisabled = useCityAndDistricctStore(
+    (state) => state.isAccessibleForDisabled,
+  );
+  const page = useCityAndDistricctStore((state) => state.page);
+  const setPage = useCityAndDistricctStore((state) => state.setPage);
+
+  const { data: facilityData } = useFacilityQuery({
+    cityId,
+    districtId,
+    isAccessibleForDisabled,
     page,
     size: 10,
-  };
-  const { data: facilityData } = useFacilityQuery(tmpData);
-  const { data: pageNationData } = useFacilityPaginationQuery({ size: 10 });
+  });
+
+  const { data: pageNationData } = useFacilityPaginationQuery({
+    cityId,
+    districtId,
+    isAccessibleForDisabled,
+    size: 10,
+  });
 
   function handleChange(event: ChangeEvent<unknown>, page: number) {
     setPage(page);

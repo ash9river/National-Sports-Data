@@ -1,18 +1,37 @@
-import { Map, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '../Hooks/useKakaoLoader';
 import { useEffect, useState } from 'react';
 import useGeolocation from '../Hooks/useGeolocation';
 import PanToCurrentPosition from '../Components/KakaoMap/PanToCurrentPosition';
 import OpenTheList from '../Components/KakaoMap/OpenTheList';
 import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
+import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
+import useFacilityQuery from '../Hooks/useFacilityQuery';
+import FacilityOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityOverlayMarkerInfoWindow';
 
 function MapContainer() {
   useKakaoLoader();
   const { position } = useGeolocation();
   const [map, setMap] = useState<kakao.maps.Map>();
+
   const facilityDetailPosition = useFacilityDetailStore(
     (state) => state.facilityDetailPosition,
   );
+
+  const cityId = useCityAndDistricctStore((state) => state.cityId);
+  const districtId = useCityAndDistricctStore((state) => state.districtId);
+  const isAccessibleForDisabled = useCityAndDistricctStore(
+    (state) => state.isAccessibleForDisabled,
+  );
+  const page = useCityAndDistricctStore((state) => state.page);
+
+  const { data: facilityData } = useFacilityQuery({
+    cityId,
+    districtId,
+    isAccessibleForDisabled,
+    page,
+    size: 10,
+  });
 
   // react-kakao-sdk에서 컴포넌트 마운트 이후의 맵 컨트롤은
   // ref보다 useState를 활용하는 것을 추천함
@@ -43,6 +62,11 @@ function MapContainer() {
       map.setLevel(5);
     }
   }, [facilityDetailPosition]);
+  const [isMarkerOpen, setIsMarkerOpen] = useState<boolean>(false);
+
+  useEffect(() => {
+    console.log(isMarkerOpen);
+  }, [isMarkerOpen]);
 
   return (
     <Map // 지도를 표시할 Container
@@ -60,21 +84,32 @@ function MapContainer() {
       level={6} // 지도의 확대 레벨
       onCreate={setMap}
     >
-      {}
-      {/* queryResult.map((position: any, index: number) => (
-        <MapMarker
-          key={`${position.title}-${position.latlng}-${index}`}
-          position={position.latlng} // 마커를 표시할 위치
-          image={{
-            src: "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png", // 마커이미지의 주소입니다
-            size: {
-              width: 24,
-              height: 35,
-            }, // 마커이미지의 크기입니다
-          }}
-          title={position.title} // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-        />
-      )) */}
+      {facilityData?.data &&
+        facilityData.data.length > 0 &&
+        facilityData.data.map((facilityItem) => {
+          if (facilityItem.latitude && facilityItem.longitude) {
+            return (
+              <>
+                <MapMarker
+                  key={`${facilityItem.facilityId}marker`}
+                  position={{
+                    lat: facilityItem.latitude,
+                    lng: facilityItem.longitude,
+                  }}
+                  onClick={() => setIsMarkerOpen((prevState) => !prevState)}
+                />
+                {isMarkerOpen && (
+                  <FacilityOverlayMarkerInfoWindow
+                    courseItem={facilityItem.courses[0]}
+                    lat={facilityItem.latitude}
+                    lng={facilityItem.longitude}
+                    setIsOpen={setIsMarkerOpen}
+                  />
+                )}
+              </>
+            );
+          }
+        })}
       <OpenTheList />
       <PanToCurrentPosition />
       <ZoomControl position="BOTTOMRIGHT" />
