@@ -46,7 +46,11 @@ function CityAndDistrictSelect() {
   };
 
   const handleToggle = () => {
-    setIsAccessibleForDisabled(!isAccessibleForDisabled);
+    if (isAccessibleForDisabled === 'Y') {
+      setIsAccessibleForDisabled('N');
+    } else {
+      setIsAccessibleForDisabled('Y');
+    }
   };
 
   return (
