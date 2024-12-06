@@ -20,7 +20,7 @@ const CardList: React.FC<CardListProps> = ({
   lastCourseRef,
   onLocationClick,
 }) => (
-  <Box sx={{ height: 'calc(100% - 350px)', overflowY: 'auto' }}>
+  <Box sx={{ height: 'calc(100% - 275px)', overflowY: 'auto' }}>
     {isLoading && (
       <Box
         display="flex"
@@ -47,7 +47,7 @@ const CardList: React.FC<CardListProps> = ({
         const isLastItem = index === courses.length - 1;
         return (
           <CourseCard
-            key={course.course_id}
+            key={index}
             course={course}
             onLocationClick={onLocationClick}
             ref={isLastItem ? lastCourseRef : null} // 안전하게 ref 전달

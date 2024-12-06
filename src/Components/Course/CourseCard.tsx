@@ -21,32 +21,46 @@ const CourseCard = forwardRef<HTMLDivElement, CourseCardProps>(
     >
       <CardContent>
         {/* 강좌 이름 */}
-        <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
-          {course.course_name}
-        </Typography>
-
-        {/* 강사 정보 */}
-        <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-          <strong>강사:</strong> {course.instructor_name}
+        <Typography
+          variant="h6"
+          sx={{ fontWeight: 'bold', mb: 1, color: 'black' }}
+        >
+          {course.courseName}
         </Typography>
 
         {/* 시간 정보 */}
-        <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-          <strong>시간:</strong> {course.start_time} - {course.end_time}
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ mb: 1, color: 'black' }}
+        >
+          <strong>시간:</strong> {course.startTime} - {course.endTime}
         </Typography>
 
         {/* 요일 정보 */}
-        <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ mb: 1, color: 'black' }}
+        >
           <strong>요일:</strong> {formatWeekday(course.weekday)}
         </Typography>
 
         {/* 강좌 설명 */}
-        <Typography variant="body2" color="textSecondary" sx={{ mb: 1 }}>
-          {course.course_desc}
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ mb: 1, color: 'black' }}
+        >
+          {course.description}
         </Typography>
 
         {/* 강좌 수강료 */}
-        <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+        <Typography
+          variant="body2"
+          color="textSecondary"
+          sx={{ mt: 1, color: 'black' }}
+        >
           <strong>수강료:</strong>{' '}
           {course.fee ? `${course.fee.toLocaleString()}원` : '무료'}
         </Typography>
