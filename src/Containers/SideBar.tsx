@@ -10,8 +10,8 @@ import {
 } from '../Types/Facility';
 import FacilityCard from '../Components/Facility/FacilityCard';
 import useFacilityPaginationQuery from '../Hooks/useFacilityPaginationQuery';
-import CityAndDistrictSelect from './CityAndDistrictSelect';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
+import FacilityForCityAndDistrictSelect from './FacilityForCityAndDistrictSelect';
 
 function SideBar() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
@@ -57,7 +57,7 @@ function SideBar() {
         transition: 'all 0.3s ease-in',
       }}
     >
-      <CityAndDistrictSelect />
+      <FacilityForCityAndDistrictSelect />
       {
         facilityData?.data !== undefined && (
           <>
