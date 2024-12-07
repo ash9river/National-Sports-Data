@@ -17,7 +17,10 @@ function useFacilityQuery(
   return useQuery({
     queryKey: ['facility', req],
     queryFn: ({ signal }) =>
-      getData<ApiResponse<facilityListResponseData[]>>('facilities', signal),
+      getData<ApiResponse<facilityListResponseData[]>>(
+        `facilities?cityId=${req.cityId}&districtId=${req.districtId}&isAccessibleForDisabled=${req.isAccessibleForDisabled}&page=${req.page}&size=${req.size}`,
+        signal,
+      ),
     select,
   });
 }

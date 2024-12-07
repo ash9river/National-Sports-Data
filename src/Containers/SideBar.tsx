@@ -55,6 +55,12 @@ function SideBar() {
         p: '0',
         left: isOpen ? '240px' : '-150px',
         transition: 'all 0.3s ease-in',
+        overflowY: 'scroll',
+        '&::-webkit-scrollbar': {
+          display: 'none', // Chrome, Safari, Opera
+        },
+        '-ms-overflow-style': 'none', // IE and Edge
+        'scrollbar-width': 'none', // Firefox
       }}
     >
       <FacilityForCityAndDistrictSelect />

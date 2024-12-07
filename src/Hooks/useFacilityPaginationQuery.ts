@@ -11,7 +11,7 @@ function useFacilityPaginationQuery(req: FacilityPaginationRequest) {
     queryKey: ['facility', 'pagination'],
     queryFn: ({ signal }) =>
       getData<ApiResponse<FacilityPaginationResponse>>(
-        'facilities/pagination-info',
+        `facilities/pagination-info?cityId=${req.cityId}&districtId=${req.districtId}&isAccessibleForDisabled=${req.isAccessibleForDisabled}&size=${req.size}`,
         signal,
       ),
   });

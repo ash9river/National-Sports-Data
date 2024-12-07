@@ -1,7 +1,8 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import { BACKEND_BASE_URL } from '../../Configs/ENV';
 
 export const apiRequester: AxiosInstance = axios.create({
-  baseURL: '/api',
+  baseURL: `${BACKEND_BASE_URL}/api`,
   timeout: 5000,
 });
 
