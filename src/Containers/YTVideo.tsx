@@ -1,9 +1,8 @@
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import Box from '@mui/material/Box';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import Skeleton from '@mui/material/Skeleton';
 import YouTube from 'react-youtube';
-import { VITE_YOUTUBE_API_KEY } from '../Configs/ENV';
+import axios from 'axios';
 
 interface VideoItem {
   id: string;
@@ -26,48 +25,71 @@ interface Props {
   PlaylistId: string;
 }
 
-const YTVideo: React.FC<Props> = ({ PlaylistId }) => {
+const YTVideo: React.FC<Props> = ({ PlaylistId, channelId }) => {
   const [videolist, setVideolist] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [videoLoadingStates, setVideoLoadingStates] = useState<boolean[]>([]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [nextPageToken, setNextPageToken] = useState<string | null>(null);
+  const observerRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const fetchVideos = async () => {
+  const fetchVideos = useCallback(
+    async (pageToken: string | null = null) => {
+      setLoading(pageToken === null);
+      setLoadingMore(pageToken !== null);
+
       try {
         const { data } = await axios.get(
-          `https://www.googleapis.com/youtube/v3/playlistItems`,
+          `https://snazzy-mooncake-f9e9e5.netlify.app/youtube/v3/playlistItems`,
           {
             params: {
               part: 'snippet',
               playlistId: PlaylistId,
-              key: VITE_YOUTUBE_API_KEY,
+              pageToken: pageToken || undefined,
+              fields: 'items(snippet(title,thumbnails,resourceId(videoId)))',
+              maxResults: 10,
             },
           },
         );
-        setVideolist(data.items || []);
-        setVideoLoadingStates(new Array(data.items.length).fill(true)); // 각 비디오 초기 로딩 상태 설정
+
+        setVideolist((prev) => [...prev, ...data.items]);
+        setNextPageToken(data.nextPageToken || null);
       } catch (error) {
         console.error('Failed to fetch video list:', error);
       } finally {
         setLoading(false);
+        setLoadingMore(false);
       }
-    };
+    },
+    [PlaylistId],
+  );
 
-    fetchVideos();
-  }, [PlaylistId]);
+  useEffect(() => {
+    fetchVideos(); // 초기 데이터 가져오기
+  }, [fetchVideos]);
 
-  const handleVideoReady = (index: number) => {
-    setVideoLoadingStates((prev) =>
-      prev.map((state, idx) => (idx === index ? false : state)),
+  useEffect(() => {
+    if (!observerRef.current || !nextPageToken) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && nextPageToken) {
+          fetchVideos(nextPageToken); // 다음 페이지 데이터 가져오기
+        }
+      },
+      { threshold: 1.0 },
     );
-  };
+
+    observer.observe(observerRef.current);
+
+    return () => observer.disconnect();
+  }, [nextPageToken, fetchVideos]);
 
   return (
     <Box
       sx={{
-        overflowX: 'auto', // 수평 스크롤 가능
+        overflowX: 'auto',
         display: 'flex',
-        whiteSpace: 'nowrap', // 가로로 정렬
+        whiteSpace: 'nowrap',
         padding: '10px',
         minHeight: '315px',
         minWidth: '500px',
@@ -79,56 +101,53 @@ const YTVideo: React.FC<Props> = ({ PlaylistId }) => {
               key={idx}
               variant="rectangular"
               sx={{
-                width: '500px', // 고정된 너비
-                height: '315px', // 고정된 높이
+                width: '500px',
+                height: '315px',
                 marginRight: '10px',
                 borderRadius: '8px',
-                minWidth: '500px',
               }}
             />
           ))
-        : videolist.map((video, index) => (
+        : videolist.map((video) => (
             <Box
               key={video.id}
               sx={{
                 width: '500px',
                 height: '315px',
                 marginRight: '10px',
-                position: 'relative', // Skeleton과 YouTube 정렬 기준 설정
-                minWidth: '500px',
               }}
             >
-              {videoLoadingStates[index] && (
-                <Skeleton
-                  variant="rectangular"
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'absolute',
-                    top: 0,
-                    left: 0,
-                    zIndex: 1,
-                    borderRadius: '8px',
-                    minWidth: '500px',
-                  }}
-                />
-              )}
               <YouTube
                 videoId={video.snippet.resourceId.videoId}
                 opts={{
                   width: '500',
                   height: '315',
-                  minWidth: '500px',
                   playerVars: {
-                    autoplay: 0, // 자동 재생 비활성화
-                    rel: 0, // 관련 동영상 표시 비활성화
-                    modestbranding: 1, // YouTube 로고 최소화
+                    autoplay: 0,
+                    rel: 0,
+                    modestbranding: 1,
                   },
                 }}
-                onReady={() => handleVideoReady(index)} // 비디오가 준비되면 로딩 상태 업데이트
               />
             </Box>
           ))}
+
+      {loadingMore &&
+        Array.from({ length: 2 }).map((_, idx) => (
+          <Skeleton
+            key={`loading-${idx}`}
+            variant="rectangular"
+            sx={{
+              width: '500px',
+              height: '315px',
+              marginRight: '10px',
+              borderRadius: '8px',
+            }}
+          />
+        ))}
+
+      {/* 무한 스크롤 트리거 */}
+      <div ref={observerRef} style={{ width: '1px', height: '1px' }} />
     </Box>
   );
 };

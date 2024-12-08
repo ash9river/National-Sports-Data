@@ -1,38 +1,27 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControl,
-  FormControlLabel,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Button } from '@mui/material';
 import CityAndDistrictSelect from '../Containers/CityAndDistrictSelect';
+import SportTypeSelect from '../Containers/SportTypeSelect';
 
 const SearchBox = ({
   onSearch,
+  defaultSportName,
 }: {
-  onSearch: (query: {
-    districtCode: string;
-    cityCode: string;
-    isDisabledOnly: boolean;
-  }) => void;
+  onSearch: (query: { sportsName?: string }) => void;
+  defaultSportName: string;
 }) => {
   const [searchParams, setSearchParams] = useState({
-    districtCode: '110',
-    cityCode: '11', // 기본값으로 "서울" 선택
-    isDisabledOnly: false,
+    sportsName: defaultSportName || '',
   });
 
+  const handleSportChange = (sportName: string) => {
+    const updatedParams = { sportsName: sportName };
+    setSearchParams(updatedParams);
+    onSearch(updatedParams); // 변경 시 바로 검색 실행
+  };
+
   const handleSearch = () => {
-    //console.log('Search Params:', searchParams);
-    // onSearch(searchParams);
-    onSearch({} as any);
+    onSearch(searchParams);
   };
 
   return (
@@ -48,8 +37,12 @@ const SearchBox = ({
       }}
     >
       <CityAndDistrictSelect />
+      <SportTypeSelect
+        onChange={handleSportChange}
+        defaultSportName={searchParams.sportsName}
+      />
 
-      <Button
+      {/* <Button
         variant="contained"
         color="primary"
         size="large"
@@ -58,7 +51,7 @@ const SearchBox = ({
         sx={{ textTransform: 'none', fontWeight: 'bold' }}
       >
         검색
-      </Button>
+      </Button> */}
     </Box>
   );
 };

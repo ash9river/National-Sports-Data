@@ -22,13 +22,12 @@ const DashboardPage: React.FC = () => {
     const fetchPlaylist = async () => {
       try {
         const { data } = await axios.get(
-          `https://www.googleapis.com/youtube/v3/playlists`,
+          `https://snazzy-mooncake-f9e9e5.netlify.app/youtube/v3/playlists`,
           {
             params: {
               part: 'snippet',
               channelId: CHANNEL_ID,
-              maxResults: 50,
-              key: VITE_YOUTUBE_API_KEY,
+              maxResults: 10,
             },
           },
         );

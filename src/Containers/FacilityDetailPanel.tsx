@@ -55,7 +55,7 @@ function FacilityDetailPanel() {
           display: 'none', // Chrome, Safari, Opera
         },
         '-ms-overflow-style': 'none', // IE and Edge
-        'scrollbar-width': 'none', // Firefox
+        scrollbarWidth: 'none', // Firefox
       }}
     >
       {facilityDetailItem?.data && facilityDetailItem.data.length > 0 && (

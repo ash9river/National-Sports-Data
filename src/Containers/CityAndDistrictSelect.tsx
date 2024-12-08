@@ -54,7 +54,7 @@ function CityAndDistrictSelect() {
   };
 
   return (
-    <Grid2 container spacing={2} sx={{ m: 2 }}>
+    <Grid2 container spacing={2}>
       <Grid2 size={12}>
         <FormControl sx={{ minWidth: 160, width: '100%' }}>
           <InputLabel id="city">광역시도</InputLabel>
@@ -68,7 +68,7 @@ function CityAndDistrictSelect() {
             onChange={handleCityChange}
           >
             {cityData.map((cityItem: City) => (
-              <MenuItem key={cityItem.cityCode} value={cityItem.cityName}>
+              <MenuItem key={cityItem.cityId} value={cityItem.cityName}>
                 {cityItem.cityName}
               </MenuItem>
             ))}
@@ -98,7 +98,7 @@ function CityAndDistrictSelect() {
           >
             {DistrictData?.data?.map((districtItem: District) => (
               <MenuItem
-                key={districtItem.districtCode}
+                key={districtItem.districtId}
                 value={districtItem.districtName}
               >
                 {districtItem.districtName}
