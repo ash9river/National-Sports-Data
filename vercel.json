@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://national-sports-data.site/api/$1"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/[^.]+", // 확장자가 없는 경로
+      "dest": "/",      // React의 index.html로 전달
+      "status": 200
+    }
+  ]
+}
