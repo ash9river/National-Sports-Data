@@ -45,7 +45,8 @@ const YTVideo: React.FC<Props> = ({ PlaylistId }) => {
               part: 'snippet',
               playlistId: PlaylistId,
               pageToken: pageToken || undefined,
-              fields: 'items(snippet(title,thumbnails,resourceId(videoId)))',
+              fields:
+                'items(snippet(title,thumbnails,resourceId(videoId))),nextPageToken',
               maxResults: 10,
             },
           },
