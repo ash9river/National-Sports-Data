@@ -9,7 +9,11 @@ interface CardListProps {
   error: Error | null;
   isFetchingNextPage: boolean;
   lastCourseRef: (node: HTMLDivElement | null) => void;
-  onLocationClick: (latitude: number, longitude: number) => void;
+  onLocationClick: (
+    latitude: number,
+    longitude: number,
+    course: Course,
+  ) => void;
 }
 
 const CardList: React.FC<CardListProps> = ({
@@ -38,7 +42,17 @@ const CardList: React.FC<CardListProps> = ({
         alignItems="center"
         height="100%"
       >
-        <Typography color="error">강좌 정보를 불러올 수 없습니다.</Typography>
+        <Typography>강좌 정보를 불러올 수 없습니다.</Typography>
+      </Box>
+    )}
+    {!isLoading && !error && courses.length === 0 && (
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        height="100%"
+      >
+        <Typography>강좌 정보가 없습니다.</Typography>
       </Box>
     )}
     {!isLoading &&

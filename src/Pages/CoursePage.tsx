@@ -10,26 +10,31 @@ import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
 import SearchBox from '../Components/SearchBox';
 import CardList from '../Components/Course/CourseList';
 import useCityAndDistrictStore from '../Contexts/useCityAndDistrictStore';
+import FacilityOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityOverlayMarkerInfoWindow';
+import { Course } from '../Types/Course';
 
 const CoursePage = () => {
   useKakaoLoader();
 
-  // 초기 사용자 위치 설정
   const { position: initialPosition } = useGeolocation();
   const [position, setPosition] = useState(initialPosition);
   const [map, setMap] = useState<kakao.maps.Map>();
 
-  // 사이드바 상태
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
 
-  // 검색 조건 상태
   const [searchParams, setSearchParams] = useState({
-    cityCode: '11', // 서울 기본값
-    districtCode: '110', // 종로구 기본값
+    cityId: '1',
+    districtId: '1',
     isDisabledOnly: false,
+    sportName: '', // 기본값: 전체
   });
 
-  // 강좌 데이터 쿼리
+  const [selectedCourseInfo, setSelectedCourseInfo] = useState<Course | null>(
+    null,
+  );
+
+  const [isMarkerOpen, setIsMarkerOpen] = useState(false);
+
   const {
     data,
     fetchNextPage,
@@ -40,59 +45,37 @@ const CoursePage = () => {
     refetch,
   } = useCourseQuery(searchParams);
 
-  // 강좌 데이터 플랫맵
   const courses = data?.pages.flatMap((page) => page.data?.courses ?? []) || [];
 
-  // 지도 이동
   useEffect(() => {
-    if (!map || !position) return;
-    const newCenter = new kakao.maps.LatLng(
-      position.latitude,
-      position.longitude,
-    );
-    map.setCenter(newCenter);
-  }, [map, position]);
+    handleSearch(); // 초기 검색 실행
+  }, []);
 
-  // IntersectionObserver로 스크롤 로드 처리
-  const observerRef = useRef<IntersectionObserver | null>(null);
-  const lastCourseRef = useCallback(
-    (node: HTMLDivElement | null) => {
-      if (isFetchingNextPage) return;
-      if (observerRef.current) observerRef.current.disconnect();
-
-      observerRef.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage) {
-          fetchNextPage();
-        }
-      });
-
-      if (node) observerRef.current.observe(node);
-    },
-    [isFetchingNextPage, fetchNextPage, hasNextPage],
-  );
-
-  // 검색 처리
-  const handleSearch = (params: {}) => {
-    const { cityCode, districtCode, isAccessibleForDisabled } =
-      useCityAndDistrictStore.getState(); // Zustand 상태값 가져오기
-
-    const searchParams = {
-      cityCode: cityCode,
-      districtCode: districtCode,
-      isDisabledOnly: isAccessibleForDisabled,
+  const handleSearch = (query: Partial<typeof searchParams> = {}) => {
+    const updatedParams = {
+      ...searchParams,
+      ...query,
     };
 
-    console.log('Search Params:', searchParams);
-
-    setSearchParams((prev) => ({ ...prev, ...searchParams }));
-
-    // refetch를 통해 새로운 검색 조건으로 데이터 다시 가져오기
+    console.log('Updated Search Params:', updatedParams);
+    setSearchParams(updatedParams);
     refetch();
   };
 
+  useEffect(() => {
+    const unsubscribe = useCityAndDistrictStore.subscribe((state) => {
+      handleSearch({
+        cityId: state.cityId,
+        districtId: state.districtId,
+        sportName: '', // cityId 변경 시 운동종목 초기화
+      });
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <>
-      {/* 사이드바 검색 영역 */}
       <Container
         sx={{
           position: 'absolute',
@@ -106,22 +89,41 @@ const CoursePage = () => {
           transition: 'all 0.3s ease-in',
         }}
       >
-        <SearchBox onSearch={handleSearch} />
+        <SearchBox
+          onSearch={(param) => handleSearch({ sportName: param.sportsName })}
+          defaultSportName={searchParams.sportName}
+        />
 
         <CardList
           courses={courses}
           isLoading={isLoading}
           error={error}
           isFetchingNextPage={isFetchingNextPage}
-          lastCourseRef={lastCourseRef}
-          onLocationClick={(latitude, longitude) => {
+          lastCourseRef={useCallback(
+            (node) => {
+              if (isFetchingNextPage || !hasNextPage) return;
+              if (node) {
+                const observer = new IntersectionObserver((entries) => {
+                  if (entries[0].isIntersecting) fetchNextPage();
+                });
+                observer.observe(node);
+              }
+            },
+            [fetchNextPage, hasNextPage, isFetchingNextPage],
+          )}
+          onLocationClick={(
+            latitude: number,
+            longitude: number,
+            course: Course,
+          ) => {
             setPosition({ latitude, longitude });
+            setSelectedCourseInfo(course);
+            setIsMarkerOpen(true);
             map?.setCenter(new kakao.maps.LatLng(latitude, longitude));
           }}
         />
       </Container>
 
-      {/* 카카오 지도 */}
       <Map
         id="map"
         center={{
@@ -136,13 +138,24 @@ const CoursePage = () => {
         onCreate={setMap}
       >
         {position && (
-          <MapMarker
-            position={{ lat: position.latitude, lng: position.longitude }}
-            image={{
-              src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-              size: { width: 24, height: 35 },
-            }}
-          />
+          <>
+            <MapMarker
+              position={{ lat: position.latitude, lng: position.longitude }}
+              image={{
+                src: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
+                size: { width: 24, height: 35 },
+              }}
+              onClick={() => setIsMarkerOpen((prev) => !prev)}
+            />
+            {isMarkerOpen && selectedCourseInfo && (
+              <FacilityOverlayMarkerInfoWindow
+                courseItem={selectedCourseInfo}
+                lat={position.latitude}
+                lng={position.longitude}
+                setIsOpen={setIsMarkerOpen}
+              />
+            )}
+          </>
         )}
         <OpenTheList />
         <PanToCurrentPosition />

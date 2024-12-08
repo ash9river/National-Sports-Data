@@ -1,11 +1,17 @@
 import React, { forwardRef } from 'react';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import { formatWeekday } from '../../Utils/fomatters';
-import { Course } from '../../Types/Course';
+import { Course, CourseListData } from '../../Types/Course';
+import { courses } from '../../Mocks/courses';
+import { toast } from 'react-toastify';
 
 interface CourseCardProps {
   course: Course;
-  onLocationClick: (latitude: number, longitude: number) => void;
+  onLocationClick: (
+    latitude: number,
+    longitude: number,
+    course: Course,
+  ) => void;
 }
 
 const CourseCard = forwardRef<HTMLDivElement, CourseCardProps>(
@@ -71,9 +77,9 @@ const CourseCard = forwardRef<HTMLDivElement, CourseCardProps>(
           color="primary"
           onClick={() => {
             if (course.latitude && course.longitude) {
-              onLocationClick(course.latitude, course.longitude);
+              onLocationClick(course.latitude, course.longitude, course);
             } else {
-              alert('위치 정보를 찾을 수 없습니다.');
+              toast.warn('위치 정보를 찾을 수 없습니다.');
             }
           }}
           sx={{ mt: 2, textTransform: 'none' }}
