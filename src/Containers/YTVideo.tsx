@@ -25,7 +25,7 @@ interface Props {
   PlaylistId: string;
 }
 
-const YTVideo: React.FC<Props> = ({ PlaylistId, channelId }) => {
+const YTVideo: React.FC<Props> = ({ PlaylistId }) => {
   const [videolist, setVideolist] = useState<VideoItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -54,7 +54,6 @@ const YTVideo: React.FC<Props> = ({ PlaylistId, channelId }) => {
         setVideolist((prev) => [...prev, ...data.items]);
         setNextPageToken(data.nextPageToken || null);
       } catch (error) {
-        console.error('Failed to fetch video list:', error);
       } finally {
         setLoading(false);
         setLoadingMore(false);

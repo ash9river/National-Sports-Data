@@ -32,7 +32,6 @@ export const getCourses = async (
     page: params.page.toString(),
     size: params.size.toString(),
   }).toString();
-  console.log(query);
   return getData<ApiResponse<CourseListData>>(`/courses?${query}`, signal);
 };
 

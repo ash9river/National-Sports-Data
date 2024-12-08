@@ -1,8 +1,7 @@
-import React, { forwardRef } from 'react';
+import { forwardRef } from 'react';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import { formatWeekday } from '../../Utils/fomatters';
-import { Course, CourseListData } from '../../Types/Course';
-import { courses } from '../../Mocks/courses';
+import { Course } from '../../Types/Course';
 import { toast } from 'react-toastify';
 
 interface CourseCardProps {

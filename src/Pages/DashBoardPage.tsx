@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import axios from 'axios';
 import PlayListItem from '../Components/Youtube/PlayListItem';
-import { VITE_YOUTUBE_API_KEY } from '../Configs/ENV';
 
 const CHANNEL_ID = 'UCpjBiFyCh3f5bDU99Izt8Fw';
 
@@ -32,9 +31,7 @@ const DashboardPage: React.FC = () => {
           },
         );
         setPlaylist(data.items || []);
-      } catch (error) {
-        console.error('Failed to fetch playlist:', error);
-      }
+      } catch (error) {}
     };
 
     fetchPlaylist();

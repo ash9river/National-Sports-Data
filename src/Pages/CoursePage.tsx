@@ -1,5 +1,5 @@
 import { useCourseQuery } from '../Hooks/useCourseQuery';
-import { useRef, useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Container } from '@mui/material';
 import useKakaoLoader from '../Hooks/useKakaoLoader';
 import useGeolocation from '../Hooks/useGeolocation';
@@ -56,8 +56,6 @@ const CoursePage = () => {
       ...searchParams,
       ...query,
     };
-
-    console.log('Updated Search Params:', updatedParams);
     setSearchParams(updatedParams);
     refetch();
   };

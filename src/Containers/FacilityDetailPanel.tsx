@@ -1,4 +1,4 @@
-import { Box, Container, Pagination } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
 import useFacilityQuery from '../Hooks/useFacilityQuery';
 import { FacilityDetailCoursesProps } from '../Types/Facility';
@@ -7,8 +7,6 @@ import FacilityCard from '../Components/Facility/FacilityCard';
 import FacilityDetailCourseCard from '../Components/Facility/FacilityDetailCourseCard';
 import CloseFacilityDetailPanelButton from '../Components/Facility/CloseFacilityDetailPanelButton';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
-import { useEffect } from 'react';
-import NoCourseCard from '../Components/Facility/NoCourseCard';
 
 function FacilityDetailPanel() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
@@ -30,7 +28,6 @@ function FacilityDetailPanel() {
       size: 10,
     },
     (data) => {
-      console.log(data);
       return {
         ...data,
         data: data.data?.filter(
@@ -39,14 +36,6 @@ function FacilityDetailPanel() {
       };
     },
   );
-
-  useEffect(() => {
-    console.log(facilityDetailItem);
-  }, [facilityDetailItem]);
-
-  useEffect(() => {
-    console.log(faciltiyId);
-  }, [faciltiyId]);
   return (
     <Container
       sx={{

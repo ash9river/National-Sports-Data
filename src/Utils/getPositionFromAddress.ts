@@ -1,28 +1,27 @@
 import axios, { CanceledError } from 'axios';
 import { KAKAO_REST_API_KEY, VITE_GOOGLE_MAP_API_KEY } from '../Configs/ENV';
 
-function getPositionFromAddress(searchAddress: string) {
-  const geocoder = new kakao.maps.services.Geocoder();
-  const callback = function (
-    result: Array<{
-      address_name: string;
-      address_type: 'REGION' | 'ROAD' | 'REGION_ADDR' | 'ROAD_ADDR';
-      x: string; //longitude
-      y: string; //latitude
-      address: kakao.maps.services.Address;
-      road_address: kakao.maps.services.RoadAaddress;
-    }>,
-    status: kakao.maps.services.Status,
-    pagination: kakao.maps.Pagination,
-  ) {
-    if (status === kakao.maps.services.Status.OK) {
-      console.log(result[0].x);
-    }
-  };
-  return geocoder.addressSearch(searchAddress, callback);
-}
+// function getPositionFromAddress(searchAddress: string) {
+//   const geocoder = new kakao.maps.services.Geocoder();
+//   const callback = function (
+//     result: Array<{
+//       address_name: string;
+//       address_type: 'REGION' | 'ROAD' | 'REGION_ADDR' | 'ROAD_ADDR';
+//       x: string; //longitude
+//       y: string; //latitude
+//       address: kakao.maps.services.Address;
+//       road_address: kakao.maps.services.RoadAaddress;
+//     }>,
+//     status: kakao.maps.services.Status,
+//     pagination: kakao.maps.Pagination,
+//   ) {
+//     if (status === kakao.maps.services.Status.OK) {
+//     }
+//   };
+//   return geocoder.addressSearch(searchAddress, callback);
+// }
 
-export default getPositionFromAddress;
+// export default getPositionFromAddress;
 
 export async function getPositionFromAddressV2(
   address: string,
@@ -51,7 +50,7 @@ export async function getPositionFromAddressV2(
       return position;
     }
   } catch (err: unknown) {
-    if (!(err instanceof CanceledError)) console.log(err);
+    // if (!(err instanceof CanceledError)) console.log(err);
   }
 }
 
@@ -74,11 +73,8 @@ async function getPositionFromAddressWithGoogle(
         };
       }
     } else {
-      console.error(`Geocoding API Error: ${response.data.status}`);
     }
-  } catch (error) {
-    console.error('Error fetching geolocation data:', error);
-  }
+  } catch (error) {}
 
   return null; // Return null if location is not found
 }

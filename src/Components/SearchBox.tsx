@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, Button } from '@mui/material';
+import { useState } from 'react';
+import { Box } from '@mui/material';
 import CityAndDistrictSelect from '../Containers/CityAndDistrictSelect';
 import SportTypeSelect from '../Containers/SportTypeSelect';
 
@@ -20,10 +20,6 @@ const SearchBox = ({
     onSearch(updatedParams); // 변경 시 바로 검색 실행
   };
 
-  const handleSearch = () => {
-    onSearch(searchParams);
-  };
-
   return (
     <Box
       sx={{
@@ -41,17 +37,6 @@ const SearchBox = ({
         onChange={handleSportChange}
         defaultSportName={searchParams.sportsName}
       />
-
-      {/* <Button
-        variant="contained"
-        color="primary"
-        size="large"
-        onClick={handleSearch}
-        fullWidth
-        sx={{ textTransform: 'none', fontWeight: 'bold' }}
-      >
-        검색
-      </Button> */}
     </Box>
   );
 };

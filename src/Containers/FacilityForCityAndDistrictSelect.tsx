@@ -12,6 +12,7 @@ import findCity, { cityData } from '../Utils/findCity';
 import { City, District } from '../Types/CityAndDistrict';
 import useDistrictQuery from '../Hooks/useDistrictQuery';
 import AccessibleIcon from '@mui/icons-material/Accessible';
+import { useEffect } from 'react';
 
 function FacilityForCityAndDistrictSelect() {
   const cityId = useCityAndDistricctStore((state) => state.cityId);
@@ -25,8 +26,22 @@ function FacilityForCityAndDistrictSelect() {
   );
 
   const { data: DistrictData } = useDistrictQuery(cityId.toString());
+  const { cityName, districtName, setPage } = useCityAndDistricctStore();
+
+  // 도시 변경 시 첫 번째 시군구 값 자동 선택
+  useEffect(() => {
+    if (DistrictData && DistrictData.data && DistrictData.data.length > 0) {
+      const firstDistrict = DistrictData.data[0];
+      setDistrict(
+        firstDistrict.districtId,
+        firstDistrict.districtCode,
+        firstDistrict.districtName,
+      );
+    }
+  }, [DistrictData]);
 
   function handleChange(event: SelectChangeEvent) {
+    setPage(1);
     if (event.target.name === 'city') {
       const { cityId, cityName, cityCode } = findCity(event.target.value);
       setCity(cityId, cityCode, cityName);
@@ -60,7 +75,7 @@ function FacilityForCityAndDistrictSelect() {
           <Select
             labelId="city"
             name="city"
-            value="서울특별시"
+            value={cityName}
             label="광역시도"
             onChange={handleChange}
             key={`${cityId}dosi`}
@@ -81,7 +96,7 @@ function FacilityForCityAndDistrictSelect() {
           <Select
             labelId="district"
             name="district"
-            value="종로구"
+            value={districtName}
             label="광역시도"
             onChange={handleChange}
             key={`district`}

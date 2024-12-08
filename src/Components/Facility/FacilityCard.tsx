@@ -28,8 +28,6 @@ function FacilityCard({
   function handleOnClick() {
     setFacilityId(facilityItem.facilityId);
     if (facilityItem.latitude && facilityItem.longitude) {
-      console.log(facilityItem.latitude);
-
       setFacilityDetailPosition({
         latitude: facilityItem.latitude,
         longitude: facilityItem.longitude,

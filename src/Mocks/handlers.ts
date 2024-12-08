@@ -5,14 +5,11 @@ import { courses } from './courses';
 
 export const handlers = [
   http.get('/hello', () => {
-    console.log('msw:get :: /hello');
     return HttpResponse.json({
       data: 'Captured a "GET /hello" request',
     });
   }),
   http.get('/api/facilities', () => {
-    console.log(facilityListResponse);
-
     return HttpResponse.json({
       status: 200,
       data: facilityListResponse.data,

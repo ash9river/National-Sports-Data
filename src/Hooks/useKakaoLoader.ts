@@ -2,8 +2,6 @@ import { useKakaoLoader as useKakaoLoaderOrigin } from 'react-kakao-maps-sdk';
 import { KAKAO_MAP_APP_KEY } from '../Configs/ENV';
 
 function useKakaoLoader() {
-  //console.log(KAKAO_MAP_APP_KEY);
-
   useKakaoLoaderOrigin({
     /**
      * ※주의※ appkey의 경우 본인의 appkey를 사용하셔야 합니다.

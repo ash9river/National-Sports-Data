@@ -1,4 +1,4 @@
-import { Map, MapMarker, ZoomControl } from 'react-kakao-maps-sdk';
+import { Map, ZoomControl } from 'react-kakao-maps-sdk';
 import useKakaoLoader from '../Hooks/useKakaoLoader';
 import { useEffect, useState } from 'react';
 import useGeolocation from '../Hooks/useGeolocation';
@@ -7,8 +7,6 @@ import OpenTheList from '../Components/KakaoMap/OpenTheList';
 import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
 import useFacilityQuery from '../Hooks/useFacilityQuery';
-import FacilityOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityOverlayMarkerInfoWindow';
-import FacilityPageOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityPageOverlayMarkerInfoWindow';
 import FacilityKaKaoMapMarker from '../Components/KakaoMap/FacilityKaKaoMapMarker';
 
 function MapContainer() {
@@ -16,8 +14,7 @@ function MapContainer() {
   const { position } = useGeolocation();
   const [map, setMap] = useState<kakao.maps.Map>();
 
-  const { facilityId, setFacilityId, facilityDetailPosition } =
-    useFacilityDetailStore();
+  const { facilityDetailPosition } = useFacilityDetailStore();
 
   const { cityId, districtId, isAccessibleForDisabled, page } =
     useCityAndDistricctStore();
