@@ -79,7 +79,12 @@ function MapContainer() {
       {facilityData?.data &&
         facilityData.data.length > 0 &&
         facilityData.data.map((facilityItem) => {
-          return <FacilityKaKaoMapMarker facilityItem={facilityItem} />;
+          return (
+            <FacilityKaKaoMapMarker
+              facilityItem={facilityItem}
+              key={`facilityMarker${facilityItem.facilityId}`}
+            />
+          );
         })}
       <OpenTheList />
       <PanToCurrentPosition />

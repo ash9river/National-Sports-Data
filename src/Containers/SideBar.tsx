@@ -25,9 +25,6 @@ function SideBar() {
   const page = useCityAndDistricctStore((state) => state.page);
   const setPage = useCityAndDistricctStore((state) => state.setPage);
 
-  const [isMarkerInfoWindowOpen, setIsMaerkInfoWindowOpen] =
-    useState<number>(-1);
-
   const { data: facilityData } = useFacilityQuery({
     cityId,
     districtId,
@@ -74,13 +71,10 @@ function SideBar() {
             {facilityData.data.map((facilityItem: facilityListResponseData) => {
               return (
                 <>
-                  <FacilityCard facilityItem={facilityItem} />
-                  {isMarkerInfoWindowOpen === facilityItem.facilityId && (
-                    <FacilityPageOverlayMarkerInfoWindow
-                      facilityItem={facilityItem}
-                      setIsOpen={setIsMaerkInfoWindowOpen}
-                    />
-                  )}
+                  <FacilityCard
+                    facilityItem={facilityItem}
+                    key={`${facilityItem.facilityId}facilityCard`}
+                  />
                 </>
               );
             })}
@@ -91,7 +85,7 @@ function SideBar() {
       }
       {pageNationData?.data !== undefined && (
         <Pagination
-          count={pageNationData.data.totalCount}
+          count={pageNationData.data.totalPages}
           page={page}
           onChange={handleChange}
           hidePrevButton

@@ -63,10 +63,11 @@ function FacilityForCityAndDistrictSelect() {
             value="서울특별시"
             label="광역시도"
             onChange={handleChange}
+            key={`${cityId}dosi`}
           >
             {cityData.map((cityItem: City) => {
               return (
-                <MenuItem value={cityItem.cityName}>
+                <MenuItem value={cityItem.cityName} key={`${cityId}city`}>
                   {cityItem.cityName}
                 </MenuItem>
               );
@@ -83,12 +84,16 @@ function FacilityForCityAndDistrictSelect() {
             value="종로구"
             label="광역시도"
             onChange={handleChange}
+            key={`district`}
           >
             {DistrictData !== undefined &&
               DistrictData.data !== undefined &&
               DistrictData.data?.map((districtItem: District) => {
                 return (
-                  <MenuItem value={districtItem.districtName}>
+                  <MenuItem
+                    value={districtItem.districtName}
+                    key={`${districtItem.districtId}district`}
+                  >
                     {districtItem.districtName}
                   </MenuItem>
                 );
