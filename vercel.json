@@ -2,15 +2,12 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/(.*)",
+      "destination": "/"
+    },
+    {
       "source": "/api/(.*)",
       "destination": "https://national-sports-data.site/api/$1"
     }
   ],
-  "routes": [
-    {
-      "src": "/[^.]+", 
-      "dest": "/",     
-      "status": 200
-    }
-  ]
 }
