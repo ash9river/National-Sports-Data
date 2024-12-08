@@ -9,5 +9,5 @@
       "source": "/api/(.*)",
       "destination": "https://national-sports-data.site/api/$1"
     }
-  ],
+  ]
 }
