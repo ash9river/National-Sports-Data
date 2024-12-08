@@ -8,8 +8,8 @@
   ],
   "routes": [
     {
-      "src": "/[^.]+", // 확장자가 없는 경로
-      "dest": "/",      // React의 index.html로 전달
+      "src": "/[^.]+", 
+      "dest": "/",     
       "status": 200
     }
   ]
