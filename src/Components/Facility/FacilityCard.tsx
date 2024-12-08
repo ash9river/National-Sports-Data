@@ -6,12 +6,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Facility, facilityListResponseData } from '../../Types/Facility';
+import { facilityListResponseData } from '../../Types/Facility';
 import useFacilityDetailStore from '../../Contexts/useFacilityDetailStore';
 import AccessibleIcon from '@mui/icons-material/Accessible';
-import { getPositionFromAddressV2 } from '../../Utils/getPositionFromAddress';
 import useAddressQuery from '../../Hooks/useAddressQuery';
-import { useEffect } from 'react';
 
 function FacilityCard({
   facilityItem,

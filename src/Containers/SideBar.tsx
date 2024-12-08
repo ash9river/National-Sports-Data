@@ -1,18 +1,12 @@
 import { Container, Pagination } from '@mui/material';
 import useSideBarIsOpenStore from '../Contexts/useSideBarIsOpenStore';
 import useFacilityQuery from '../Hooks/useFacilityQuery';
-import { ChangeEvent, useEffect, useState } from 'react';
-import {
-  Facility,
-  FacilityListData,
-  FacilityListRequest,
-  facilityListResponseData,
-} from '../Types/Facility';
+import { ChangeEvent } from 'react';
+import { facilityListResponseData } from '../Types/Facility';
 import FacilityCard from '../Components/Facility/FacilityCard';
 import useFacilityPaginationQuery from '../Hooks/useFacilityPaginationQuery';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
 import FacilityForCityAndDistrictSelect from './FacilityForCityAndDistrictSelect';
-import FacilityPageOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityPageOverlayMarkerInfoWindow';
 
 function SideBar() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
@@ -40,7 +34,7 @@ function SideBar() {
     size: 10,
   });
 
-  function handleChange(event: ChangeEvent<unknown>, page: number) {
+  function handleChange(_event: ChangeEvent<unknown>, page: number) {
     setPage(page);
   }
 

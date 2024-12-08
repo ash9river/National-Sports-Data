@@ -1,4 +1,4 @@
-import axios, { CanceledError } from 'axios';
+import axios from 'axios';
 import { KAKAO_REST_API_KEY, VITE_GOOGLE_MAP_API_KEY } from '../Configs/ENV';
 
 // function getPositionFromAddress(searchAddress: string) {

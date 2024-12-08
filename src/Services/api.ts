@@ -1,6 +1,6 @@
-import { ApiResponse } from '../Types/ResponseType';
-import { CourseListData } from '../Types/Course';
-import { API_ENDPOINT, API_KEY } from '../Configs/ENV';
+// import { ApiResponse } from '../Types/ResponseType';
+// import { CourseListData } from '../Types/Course';
+// import { API_ENDPOINT, API_KEY } from '../Configs/ENV';
 
 // export const getCourses = async (
 //   pageNo: number = 1,

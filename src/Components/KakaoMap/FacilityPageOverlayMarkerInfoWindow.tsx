@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from 'react';
 import { facilityListResponseData } from '../../Types/Facility';
 import { CustomOverlayMap } from 'react-kakao-maps-sdk';
 import { Button, Card, Typography } from '@mui/material';

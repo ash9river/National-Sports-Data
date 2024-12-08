@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getData } from '../Services/http/getData';
 import {
-  Facility,
-  FacilityListData,
   FacilityListRequest,
   facilityListResponseData,
 } from '../Types/Facility';
