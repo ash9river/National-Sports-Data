@@ -1,3 +1,6 @@
+import axios, { CanceledError } from 'axios';
+import { KAKAO_REST_API_KEY, VITE_GOOGLE_MAP_API_KEY } from '../Configs/ENV';
+
 function getPositionFromAddress(searchAddress: string) {
   const geocoder = new kakao.maps.services.Geocoder();
   const callback = function (
@@ -20,3 +23,62 @@ function getPositionFromAddress(searchAddress: string) {
 }
 
 export default getPositionFromAddress;
+
+export async function getPositionFromAddressV2(
+  address: string,
+  signal?: AbortSignal,
+) {
+  const url = `https://dapi.kakao.com/v2/local/search/address.json?query=${address}&analyze_type=similar`;
+  try {
+    const response = await axios.get(url, {
+      headers: {
+        Authorization: `KakaoAK ${KAKAO_REST_API_KEY}`,
+      },
+      signal,
+    });
+    if (response.data.meta.total_count === 1) {
+      const position = {
+        lat: response.data.documents[0].y,
+        lng: response.data.documents[0].x,
+      };
+      return position;
+    } else {
+      const googleResponse = await getPositionFromAddressWithGoogle(address);
+      const position = {
+        lat: googleResponse?.lat.toString(),
+        lng: googleResponse?.lng.toString(),
+      };
+      return position;
+    }
+  } catch (err: unknown) {
+    if (!(err instanceof CanceledError)) console.log(err);
+  }
+}
+
+async function getPositionFromAddressWithGoogle(
+  address: string,
+): Promise<{ lat: number; lng: number } | null> {
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+    address,
+  )}&key=${VITE_GOOGLE_MAP_API_KEY}`;
+
+  try {
+    const response = await axios.get(url);
+
+    if (response.data.status === 'OK') {
+      const location = response.data.results[0]?.geometry?.location;
+      if (location) {
+        return {
+          lat: location.lat,
+          lng: location.lng,
+        };
+      }
+    } else {
+      console.error(`Geocoding API Error: ${response.data.status}`);
+    }
+  } catch (error) {
+    console.error('Error fetching geolocation data:', error);
+  }
+
+  return null; // Return null if location is not found
+}

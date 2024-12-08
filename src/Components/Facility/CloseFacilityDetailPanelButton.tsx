@@ -6,11 +6,13 @@ function CloseFacilityDetailPanelButton() {
   const setFacilityDetailPosition = useFacilityDetailStore(
     (state) => state.setFacilityDetailPosition,
   );
+  const setFacilityId = useFacilityDetailStore((state) => state.setFacilityId);
   function handleOnClick() {
     setFacilityDetailPosition({
       longitude: 0,
       latitude: 0,
     });
+    setFacilityId(0);
   }
   return (
     <Button

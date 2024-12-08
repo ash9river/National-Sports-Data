@@ -8,22 +8,19 @@ import useFacilityDetailStore from '../Contexts/useFacilityDetailStore';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
 import useFacilityQuery from '../Hooks/useFacilityQuery';
 import FacilityOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityOverlayMarkerInfoWindow';
+import FacilityPageOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityPageOverlayMarkerInfoWindow';
+import FacilityKaKaoMapMarker from '../Components/KakaoMap/FacilityKaKaoMapMarker';
 
 function MapContainer() {
   useKakaoLoader();
   const { position } = useGeolocation();
   const [map, setMap] = useState<kakao.maps.Map>();
 
-  const facilityDetailPosition = useFacilityDetailStore(
-    (state) => state.facilityDetailPosition,
-  );
+  const { facilityId, setFacilityId, facilityDetailPosition } =
+    useFacilityDetailStore();
 
-  const cityId = useCityAndDistricctStore((state) => state.cityId);
-  const districtId = useCityAndDistricctStore((state) => state.districtId);
-  const isAccessibleForDisabled = useCityAndDistricctStore(
-    (state) => state.isAccessibleForDisabled,
-  );
-  const page = useCityAndDistricctStore((state) => state.page);
+  const { cityId, districtId, isAccessibleForDisabled, page } =
+    useCityAndDistricctStore();
 
   const { data: facilityData } = useFacilityQuery({
     cityId,
@@ -42,7 +39,6 @@ function MapContainer() {
       position?.latitude,
       position?.longitude,
     );
-    //console.log(newCenter);
 
     map.setCenter(newCenter);
   }, [map, position]);
@@ -58,15 +54,11 @@ function MapContainer() {
         facilityDetailPosition?.latitude,
         facilityDetailPosition?.longitude,
       );
-      map?.panTo(newCenter);
-      map.setLevel(5);
-    }
-  }, [facilityDetailPosition]);
-  const [isMarkerOpen, setIsMarkerOpen] = useState<boolean>(false);
 
-  useEffect(() => {
-    console.log(isMarkerOpen);
-  }, [isMarkerOpen]);
+      map.setLevel(5);
+      map.panTo(newCenter);
+    }
+  }, [facilityDetailPosition, map]);
 
   return (
     <Map // 지도를 표시할 Container
@@ -87,28 +79,7 @@ function MapContainer() {
       {facilityData?.data &&
         facilityData.data.length > 0 &&
         facilityData.data.map((facilityItem) => {
-          if (facilityItem.latitude && facilityItem.longitude) {
-            return (
-              <>
-                <MapMarker
-                  key={`${facilityItem.facilityId}marker`}
-                  position={{
-                    lat: facilityItem.latitude,
-                    lng: facilityItem.longitude,
-                  }}
-                  onClick={() => setIsMarkerOpen((prevState) => !prevState)}
-                />
-                {isMarkerOpen && (
-                  <FacilityOverlayMarkerInfoWindow
-                    courseItem={facilityItem.courses[0]}
-                    lat={facilityItem.latitude}
-                    lng={facilityItem.longitude}
-                    setIsOpen={setIsMarkerOpen}
-                  />
-                )}
-              </>
-            );
-          }
+          return <FacilityKaKaoMapMarker facilityItem={facilityItem} />;
         })}
       <OpenTheList />
       <PanToCurrentPosition />

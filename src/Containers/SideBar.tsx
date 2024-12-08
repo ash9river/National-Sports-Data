@@ -12,6 +12,7 @@ import FacilityCard from '../Components/Facility/FacilityCard';
 import useFacilityPaginationQuery from '../Hooks/useFacilityPaginationQuery';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
 import FacilityForCityAndDistrictSelect from './FacilityForCityAndDistrictSelect';
+import FacilityPageOverlayMarkerInfoWindow from '../Components/KakaoMap/FacilityPageOverlayMarkerInfoWindow';
 
 function SideBar() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
@@ -23,6 +24,9 @@ function SideBar() {
   );
   const page = useCityAndDistricctStore((state) => state.page);
   const setPage = useCityAndDistricctStore((state) => state.setPage);
+
+  const [isMarkerInfoWindowOpen, setIsMaerkInfoWindowOpen] =
+    useState<number>(-1);
 
   const { data: facilityData } = useFacilityQuery({
     cityId,
@@ -71,6 +75,12 @@ function SideBar() {
               return (
                 <>
                   <FacilityCard facilityItem={facilityItem} />
+                  {isMarkerInfoWindowOpen === facilityItem.facilityId && (
+                    <FacilityPageOverlayMarkerInfoWindow
+                      facilityItem={facilityItem}
+                      setIsOpen={setIsMaerkInfoWindowOpen}
+                    />
+                  )}
                 </>
               );
             })}

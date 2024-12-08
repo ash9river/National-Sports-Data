@@ -9,6 +9,9 @@ import {
 import { Facility, facilityListResponseData } from '../../Types/Facility';
 import useFacilityDetailStore from '../../Contexts/useFacilityDetailStore';
 import AccessibleIcon from '@mui/icons-material/Accessible';
+import { getPositionFromAddressV2 } from '../../Utils/getPositionFromAddress';
+import useAddressQuery from '../../Hooks/useAddressQuery';
+import { useEffect } from 'react';
 
 function FacilityCard({
   facilityItem,
@@ -20,13 +23,26 @@ function FacilityCard({
     (state) => state.setFacilityDetailPosition,
   );
 
+  const { data: addressData } = useAddressQuery(facilityItem.roadAddress);
+
   function handleOnClick() {
     setFacilityId(facilityItem.facilityId);
-    if (facilityItem.latitude && facilityItem.longitude)
+    if (facilityItem.latitude && facilityItem.longitude) {
+      console.log(facilityItem.latitude);
+
       setFacilityDetailPosition({
         latitude: facilityItem.latitude,
         longitude: facilityItem.longitude,
       });
+    } else {
+      const position = addressData;
+      if (!position) return;
+      if (position.lat && position.lng)
+        setFacilityDetailPosition({
+          latitude: position.lat,
+          longitude: position.lng,
+        });
+    }
   }
 
   return (

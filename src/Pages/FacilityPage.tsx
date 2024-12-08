@@ -7,13 +7,14 @@ const FacilityPage = () => {
   const facilityDetailPosition = useFacilityDetailStore(
     (state) => state.facilityDetailPosition,
   );
+
+  const facilityId = useFacilityDetailStore((state) => state.facilityId);
+
   return (
     <>
       <MapContainer />
       <SideBar />
-      {facilityDetailPosition &&
-        facilityDetailPosition.longitude !== 0 &&
-        facilityDetailPosition.latitude !== 0 && <FacilityDetailPanel />}
+      {facilityId && <FacilityDetailPanel />}
     </>
   );
 };

@@ -7,6 +7,8 @@ import FacilityCard from '../Components/Facility/FacilityCard';
 import FacilityDetailCourseCard from '../Components/Facility/FacilityDetailCourseCard';
 import CloseFacilityDetailPanelButton from '../Components/Facility/CloseFacilityDetailPanelButton';
 import useCityAndDistricctStore from '../Contexts/useCityAndDistrictStore';
+import { useEffect } from 'react';
+import NoCourseCard from '../Components/Facility/NoCourseCard';
 
 function FacilityDetailPanel() {
   const isOpen = useSideBarIsOpenStore((state) => state.isOpen);
@@ -38,6 +40,13 @@ function FacilityDetailPanel() {
     },
   );
 
+  useEffect(() => {
+    console.log(facilityDetailItem);
+  }, [facilityDetailItem]);
+
+  useEffect(() => {
+    console.log(faciltiyId);
+  }, [faciltiyId]);
   return (
     <Container
       sx={{
@@ -64,19 +73,13 @@ function FacilityDetailPanel() {
       <CloseFacilityDetailPanelButton />
       <Box>
         {facilityDetailItem?.data &&
+          facilityDetailItem.data[0].courses.length > 0 &&
           facilityDetailItem.data[0].courses.map(
             (item: FacilityDetailCoursesProps) => {
               return <FacilityDetailCourseCard courseItem={item} />;
             },
           )}
       </Box>
-
-      {/*       <Pagination
-        count={100}
-        hidePrevButton
-        hideNextButton
-        sx={{ display: 'flex', justifyContent: 'center' }}
-      /> */}
     </Container>
   );
 }

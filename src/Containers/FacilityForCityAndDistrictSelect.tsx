@@ -60,6 +60,7 @@ function FacilityForCityAndDistrictSelect() {
           <Select
             labelId="city"
             name="city"
+            value="서울특별시"
             label="광역시도"
             onChange={handleChange}
           >
@@ -79,6 +80,7 @@ function FacilityForCityAndDistrictSelect() {
           <Select
             labelId="district"
             name="district"
+            value="종로구"
             label="광역시도"
             onChange={handleChange}
           >
