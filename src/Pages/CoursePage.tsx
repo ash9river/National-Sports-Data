@@ -25,7 +25,7 @@ const CoursePage = () => {
   const [searchParams, setSearchParams] = useState({
     cityId: '1',
     districtId: '1',
-    isDisabledOnly: false,
+    isAccessibleForDisabled: 'Y',
     sportName: '', // 기본값: 전체
   });
 
