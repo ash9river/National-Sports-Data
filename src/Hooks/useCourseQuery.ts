@@ -6,7 +6,7 @@ import { ApiResponse } from '../Types/ResponseType';
 export const useCourseQuery = (params: {
   districtCode?: string;
   city?: string;
-  isAccessibleForDisabled: 'Y'|'N';
+  isAccessibleForDisabled: string;
 }) => {
   const queryResult = useInfiniteQuery<ApiResponse<CourseListData>, Error>({
     queryKey: ['courses', params],
