@@ -3,6 +3,7 @@ import { Card, CardContent, Typography, Button } from '@mui/material';
 import { formatWeekday } from '../../Utils/fomatters';
 import { Course } from '../../Types/Course';
 import { toast } from 'react-toastify';
+import AccessibleIcon from '@mui/icons-material/Accessible';
 
 interface CourseCardProps {
   course: Course;
@@ -25,6 +26,15 @@ const CourseCard = forwardRef<HTMLDivElement, CourseCardProps>(
       }}
     >
       <CardContent>
+        {course.isAccessibleForDisabled === 'Y' && (
+          <AccessibleIcon
+            sx={{
+              position: 'absolute',
+              right: '60px',
+            }}
+          />
+        )}
+        
         {/* 강좌 이름 */}
         <Typography
           variant="h6"
