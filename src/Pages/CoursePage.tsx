@@ -65,6 +65,7 @@ const CoursePage = () => {
       handleSearch({
         cityId: state.cityId,
         districtId: state.districtId,
+        isAccessibleForDisabled: state.isAccessibleForDisabled,
         sportName: '', // cityId 변경 시 운동종목 초기화
       });
     });
