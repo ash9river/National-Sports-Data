@@ -6,14 +6,13 @@ import { ApiResponse } from '../Types/ResponseType';
 export const useCourseQuery = (params: {
   districtCode?: string;
   city?: string;
-  isDisabledOnly: boolean;
+  isAccessibleForDisabled: 'Y'|'N';
 }) => {
   const queryResult = useInfiniteQuery<ApiResponse<CourseListData>, Error>({
     queryKey: ['courses', params],
     queryFn: ({ pageParam = 1 }) =>
       getCourses({
         ...params,
-        isAccessibleForDisabled: params.isDisabledOnly ? 'Y' : 'N',
         page: pageParam as number,
         size: 10,
       }),
