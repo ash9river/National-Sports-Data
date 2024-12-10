@@ -1,5 +1,5 @@
 import { forwardRef } from 'react';
-import { Card, CardContent, Typography, Button } from '@mui/material';
+import { Card, CardContent, Typography, Button, Stack } from '@mui/material';
 import { formatWeekday } from '../../Utils/fomatters';
 import { Course } from '../../Types/Course';
 import { toast } from 'react-toastify';
@@ -26,22 +26,16 @@ const CourseCard = forwardRef<HTMLDivElement, CourseCardProps>(
       }}
     >
       <CardContent>
-        {course.isAccessibleForDisabled === 'Y' && (
-          <AccessibleIcon
-            sx={{
-              position: 'absolute',
-              right: '60px',
-            }}
-          />
-        )}
-        
-        {/* 강좌 이름 */}
-        <Typography
-          variant="h6"
-          sx={{ fontWeight: 'bold', mb: 1, color: 'black' }}
-        >
-          {course.courseName}
-        </Typography>
+        <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+          {/* 강좌 이름 */}
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 'bold', mb: 1, color: 'black' }}
+          >
+            {course.courseName}
+          </Typography>
+          {course.isAccessibleForDisabled === 'Y' && <AccessibleIcon />}
+        </Stack>
 
         {/* 시간 정보 */}
         <Typography
